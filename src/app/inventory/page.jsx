@@ -1,83 +1,122 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import DynamicTable from "@/app/components/DynamicTable";
 
-/* ================= PRODUCTS ================= */
-
-const products = [
-  {
-    asin: "B08N5WRWNW",
-    sku: "MAC-M1-512",
-    name: "Apple MacBook Pro M1",
-    brand: "Apple",
-    price: 129900,
-    stock: 12,
-    status: "Active",
-    salesRank: 231,
-    views: 560,
-    date: "2026-03-13"
-  },
-  {
-    asin: "B07DJCVTBH",
-    sku: "DELL-7480",
-    name: "Dell Latitude 7480",
-    brand: "Dell",
-    price: 79900,
-    stock: 2,
-    status: "Low Stock",
-    salesRank: 900,
-    views: 120,
-    date: "2026-03-10"
-  },
-  {
-    asin: "B09F3Q2B5M",
-    sku: "HP-ENVY-13",
-    name: "HP Envy 13",
-    brand: "HP",
-    price: 89900,
-    stock: 0,
-    status: "Out of Stock",
-    salesRank: 1200,
-    views: 300,
-    date: "2026-03-01"
-  }
-];
-
-/* ================= INVENTORY PAGE ================= */
-
 export default function InventoryPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const headers = [
-    "Product",
-    "ASIN",
-    "SKU",
-    "Brand",
-    "Price",
-    "Stock",
-    "Views",
-    "Sales Rank",
-    "Status"
-  ];
+  const headers = ["Main Image", "Item Name", "Created Date", "SKU No"];
 
-  const data = products.map((p) => ({
-    Product: p.name,
-    ASIN: p.asin,
-    SKU: p.sku,
-    Brand: p.brand,
-    Price: p.price,
-    Stock: p.stock,
-    Views: p.views,
-    "Sales Rank": p.salesRank,
-    Status: p.status,
-    date: p.date
-  }));
+  useEffect(() => {
+    async function fetchInventory() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const res = await fetch("/api/inventory-api", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "Failed to load inventory.");
+        }
+
+        const formattedData = (data.products || []).map((item) => ({
+          "Main Image": item.mainImg ? (
+            <img
+              src={item.mainImg}
+              alt={item.itemName}
+              className="h-20 w-20 object-cover rounded-lg border"
+            />
+          ) : (
+            "No Image"
+          ),
+          "Item Name": item.itemName,
+          "Created Date":
+            item.createdDate !== "N/A"
+              ? new Date(item.createdDate).toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+              : "N/A",
+          "SKU No": item.skuNo,
+          date: item.createdDate !== "N/A" ? item.createdDate : "",
+        }));
+
+        setProducts(formattedData);
+      } catch (err) {
+        console.error(err);
+        setError(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchInventory();
+  }, []);
+
+  /* ================= SKELETON LOADER ================= */
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6">
+
+          <div className="animate-pulse space-y-6">
+
+            {[...Array(6)].map((_, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-4 items-center gap-6 border-b pb-4"
+              >
+                {/* Image skeleton */}
+                <div className="h-20 w-20 bg-slate-200 rounded-lg"></div>
+
+                {/* Item name */}
+                <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+
+                {/* Date */}
+                <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+
+                {/* SKU */}
+                <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /* ================= ERROR ================= */
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="bg-red-50 text-red-600 rounded-2xl border border-red-200 p-6">
+          {error}
+        </div>
+      </div>
+    );
+  }
+
+  /* ================= TABLE ================= */
 
   return (
     <DynamicTable
       title="Inventory"
       headers={headers}
-      data={data}
-      filterKey="Brand"
+      data={products}
+      filterKey="SKU No"
       dateKey="date"
     />
   );
