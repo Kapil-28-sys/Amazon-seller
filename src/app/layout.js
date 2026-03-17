@@ -8,29 +8,26 @@ import Topbar from "./components/topbar";
 import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }) {
-
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const pathname = usePathname();
-
   const isLoginPage = pathname === "/login";
 
   return (
     <html lang="en">
       <body className="bg-slate-100">
-
-        {/* LOGIN PAGE (NO SIDEBAR) */}
         {isLoginPage ? (
           children
         ) : (
           <>
-            {/* SIDEBAR */}
             <Sidebar
               collapsed={collapsed}
               setCollapsed={setCollapsed}
+              mobileOpen={mobileOpen}
+              setMobileOpen={setMobileOpen}
             />
 
-            {/* CONTENT AREA */}
             <div
               className={`
                 flex flex-col min-h-screen
@@ -38,20 +35,18 @@ export default function RootLayout({ children }) {
                 ${collapsed ? "md:ml-16" : "md:ml-64"}
               `}
             >
+              <Topbar
+                collapsed={collapsed}
+                setMobileOpen={setMobileOpen}
+              />
 
-              {/* TOPBAR */}
-              <Topbar collapsed={collapsed} />
-
-              {/* PAGE CONTENT */}
               <main className="pt-14">
                 <Toaster position="top-right" />
                 {children}
               </main>
-
             </div>
           </>
         )}
-
       </body>
     </html>
   );

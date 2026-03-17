@@ -1,5 +1,19 @@
 import { NextResponse } from "next/server";
 
+function formatDate(dateString) {
+  if (!dateString) return "N/A";
+
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) return "N/A";
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 export async function GET() {
   try {
     const res = await fetch(
@@ -35,7 +49,7 @@ export async function GET() {
           itemName: summary?.itemName || "N/A",
           manufacturer: summary?.manufacturer || "N/A",
           modelNumber: summary?.modelNumber || "N/A",
-          releaseDate: summary?.releaseDate || "N/A",
+          releaseDate: formatDate(summary?.releaseDate),
           style: summary?.style || "N/A",
         }))
       ) || [];

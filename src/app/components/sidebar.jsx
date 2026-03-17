@@ -13,15 +13,17 @@ import {
   HiOutlineExclamationTriangle,
   HiOutlineBolt,
   HiChevronDown,
-  HiOutlineBars3,
   HiOutlineXMark,
 } from "react-icons/hi2";
 
-export default function Sidebar({ collapsed, setCollapsed }) {
-
+export default function Sidebar({
+  collapsed,
+  setCollapsed,
+  mobileOpen,
+  setMobileOpen,
+}) {
   const pathname = usePathname();
 
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
 
   const sidebarExpanded = mobileOpen || !collapsed;
@@ -44,31 +46,15 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
   return (
     <>
-      {/* ================= MOBILE TOP BAR ================= */}
-
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[#232F3E] text-white flex items-center px-4 z-[1000] shadow">
-
-        <button onClick={() => setMobileOpen(true)}>
-          <HiOutlineBars3 className="text-2xl"/>
-        </button>
-
-        <span className="ml-4 font-bold text-lg">
-          Amazon Panel
-        </span>
-
-      </div>
-
-      {/* ================= OVERLAY ================= */}
-
+      {/* Overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-[1200] md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* ================= SIDEBAR ================= */}
-
+      {/* Sidebar */}
       <aside
         className={`
           fixed
@@ -77,7 +63,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           h-[calc(100vh-56px)] md:h-screen
           bg-[#232F3E]
           text-white
-          z-50
+          z-[1250]
           transition-all duration-300
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
@@ -85,16 +71,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           flex flex-col
         `}
       >
-
-        {/* ================= LOGO ================= */}
-
         <div
           onClick={toggleCollapse}
           className="flex items-center gap-3 px-3 py-4 border-b border-[#37475A] cursor-pointer"
         >
-
           <div className="w-9 h-9 bg-[#FF9900] text-black font-bold flex items-center justify-center rounded">
-            a
+            A
           </div>
 
           {sidebarExpanded && (
@@ -107,20 +89,20 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           )}
 
           <button
+            type="button"
             className="ml-auto md:hidden"
-            onClick={() => setMobileOpen(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMobileOpen(false);
+            }}
           >
-            <HiOutlineXMark className="text-2xl"/>
+            <HiOutlineXMark className="text-2xl" />
           </button>
-
         </div>
 
-        {/* ================= MENU ================= */}
-
         <nav className="flex-1 px-2 py-3 space-y-1 overflow-y-auto">
-
           <MenuItem
-            icon={<HiOutlineHome/>}
+            icon={<HiOutlineHome />}
             label="Dashboard"
             href="/dashboard"
             open={sidebarExpanded}
@@ -129,7 +111,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           />
 
           <MenuItem
-            icon={<HiOutlineHome/>}
+            icon={<HiOutlineHome />}
             label="Inventory"
             href="/inventory"
             open={sidebarExpanded}
@@ -138,7 +120,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           />
 
           <MenuItem
-            icon={<HiOutlineChartBar/>}
+            icon={<HiOutlineChartBar />}
             label="Category"
             href="/listing"
             open={sidebarExpanded}
@@ -146,16 +128,13 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             closeSidebar={closeSidebar}
           />
 
-          {/* ================= ORDERS ================= */}
-
           <Dropdown
-            icon={<HiOutlineShoppingCart/>}
+            icon={<HiOutlineShoppingCart />}
             label="Orders"
             sidebarOpen={sidebarExpanded}
             open={openMenu === "orders"}
             onClick={() => toggleMenu("orders")}
           >
-
             <SubItem
               label="All Orders"
               href="/order"
@@ -169,11 +148,10 @@ export default function Sidebar({ collapsed, setCollapsed }) {
               active={pathname === "/order/create"}
               closeSidebar={closeSidebar}
             />
-
           </Dropdown>
 
           <MenuItem
-            icon={<HiOutlineArrowPath/>}
+            icon={<HiOutlineArrowPath />}
             label="Payments"
             href="/payments"
             open={sidebarExpanded}
@@ -182,7 +160,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           />
 
           <MenuItem
-            icon={<HiOutlineArrowPath/>}
+            icon={<HiOutlineArrowPath />}
             label="Reports"
             href="/reports"
             open={sidebarExpanded}
@@ -191,7 +169,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           />
 
           <MenuItem
-            icon={<HiOutlineExclamationTriangle/>}
+            icon={<HiOutlineExclamationTriangle />}
             label="Customer Details"
             href="/customers"
             open={sidebarExpanded}
@@ -201,27 +179,21 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           />
 
           <MenuItem
-            icon={<HiOutlineBolt/>}
+            icon={<HiOutlineBolt />}
             label="Returns Products"
             href="/return"
             open={sidebarExpanded}
             active={pathname === "/return"}
             closeSidebar={closeSidebar}
           />
-
         </nav>
-
       </aside>
     </>
   );
 }
 
-/* ================= MENU ITEM ================= */
-
 function MenuItem({ icon, label, href, open, active, badge, closeSidebar }) {
-
   return (
-
     <Link
       href={href}
       onClick={closeSidebar}
@@ -237,78 +209,46 @@ function MenuItem({ icon, label, href, open, active, badge, closeSidebar }) {
         }
       `}
     >
+      <span className="text-xl">{icon}</span>
 
-      <span className="text-xl">
-        {icon}
-      </span>
-
-      {open && (
-        <span className="text-sm font-semibold">
-          {label}
-        </span>
-      )}
+      {open && <span className="text-sm font-semibold">{label}</span>}
 
       {badge && open && (
         <span className="ml-auto bg-[#FFD814] text-black text-xs px-2 rounded-full font-bold">
           {badge}
         </span>
       )}
-
     </Link>
-
   );
-
 }
 
-/* ================= DROPDOWN ================= */
-
 function Dropdown({ icon, label, open, sidebarOpen, onClick, children }) {
-
   return (
-
     <div>
-
       <button
+        type="button"
         onClick={onClick}
         className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-[#37475A] transition"
       >
-
-        <span className="text-xl">
-          {icon}
-        </span>
+        <span className="text-xl">{icon}</span>
 
         {sidebarOpen && (
           <>
-            <span className="text-sm font-semibold">
-              {label}
-            </span>
-
+            <span className="text-sm font-semibold">{label}</span>
             <HiChevronDown
               className={`ml-auto transition ${open ? "rotate-180" : ""}`}
             />
           </>
         )}
-
       </button>
 
-      {open && sidebarOpen && (
-        <div className="ml-8 space-y-1">
-          {children}
-        </div>
-      )}
-
+      {open && sidebarOpen && <div className="ml-8 space-y-1">{children}</div>}
     </div>
-
   );
-
 }
 
-/* ================= SUB ITEM ================= */
-
 function SubItem({ label, href, active, closeSidebar }) {
-
   return (
-
     <Link
       href={href}
       onClick={closeSidebar}
@@ -321,11 +261,7 @@ function SubItem({ label, href, active, closeSidebar }) {
         }
       `}
     >
-
       {label}
-
     </Link>
-
   );
-
 }

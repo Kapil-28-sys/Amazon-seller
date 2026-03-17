@@ -1,26 +1,9 @@
 import { NextResponse } from "next/server";
+import { apiFetch } from "../Baseurl/apiFetch";
 
 export async function GET() {
   try {
-    const res = await fetch(
-      "https://amazon-node-api-a4i2.onrender.com/api/inventory/A1U887FZM7557Z",
-      {
-        method: "GET",
-        cache: "no-store",
-      }
-    );
-
-    if (!res.ok) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Failed to fetch inventory data from external API",
-        },
-        { status: res.status }
-      );
-    }
-
-    const data = await res.json();
+    const data = await apiFetch("/api/inventory/A1U887FZM7557Z");
 
     const products =
       data?.items?.map((item, index) => {
@@ -48,7 +31,7 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: "Server error while fetching inventory data",
+        message: error.message || "Server error while fetching inventory data",
       },
       { status: 500 }
     );
