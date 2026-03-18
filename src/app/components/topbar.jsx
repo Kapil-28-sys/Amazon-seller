@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 import SearchOverlay from "./SearchOverlay";
 import AllProductsModal from "./AllProductModel";
@@ -27,11 +28,14 @@ export default function TopBar({ collapsed, setMobileOpen }) {
   const router = useRouter();
 
   const [openSearch, setOpenSearch] = useState(false);
-  const [openProfile, setOpenProfile] = useState(false);
   const [openProducts, setOpenProducts] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const profileRef = useRef(null);
+  const [openMobileProfile, setOpenMobileProfile] = useState(false);
+  const [openDesktopProfile, setOpenDesktopProfile] = useState(false);
+
+  const mobileProfileRef = useRef(null);
+  const desktopProfileRef = useRef(null);
   const searchRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +47,8 @@ export default function TopBar({ collapsed, setMobileOpen }) {
 
       if (e.key === "Escape") {
         setOpenSearch(false);
-        setOpenProfile(false);
+        setOpenMobileProfile(false);
+        setOpenDesktopProfile(false);
         setOpenProducts(false);
       }
     }
@@ -53,19 +58,24 @@ export default function TopBar({ collapsed, setMobileOpen }) {
   }, []);
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setOpenProfile(false);
+    function handleOutside(e) {
+      if (
+        mobileProfileRef.current &&
+        !mobileProfileRef.current.contains(e.target)
+      ) {
+        setOpenMobileProfile(false);
+      }
+
+      if (
+        desktopProfileRef.current &&
+        !desktopProfileRef.current.contains(e.target)
+      ) {
+        setOpenDesktopProfile(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
+    document.addEventListener("click", handleOutside);
+    return () => document.removeEventListener("click", handleOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -75,7 +85,8 @@ export default function TopBar({ collapsed, setMobileOpen }) {
       sessionStorage.clear();
 
       toast.success("Logged out successfully");
-      setOpenProfile(false);
+      setOpenMobileProfile(false);
+      setOpenDesktopProfile(false);
       router.push("/login");
     } catch (error) {
       toast.error("Logout failed");
@@ -89,225 +100,267 @@ export default function TopBar({ collapsed, setMobileOpen }) {
     }
   };
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    toast.loading("Updating data...", { id: "refresh" });
+
+    setTimeout(() => {
+      toast.success("Dashboard updated!", { id: "refresh" });
+      setRefreshing(false);
+      window.location.reload();
+    }, 1200);
+  };
+
+  const closeAllProfiles = () => {
+    setOpenMobileProfile(false);
+    setOpenDesktopProfile(false);
+  };
+
   return (
     <>
-      <header
+      <motion.header
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
         className={`
-          fixed top-0 h-14 bg-[#232F3E] text-white border-b border-[#37475A]
+          fixed top-0 h-17 text-white border-b border-white/10
           z-[9999] transition-all duration-300
           left-0 w-full
-          ${collapsed ? "md:left-16 md:w-[calc(100%-4rem)]" : "md:left-64 md:w-[calc(100%-16rem)]"}
+          bg-[#232F3E]/95 backdrop-blur-xl  
+          ${
+            collapsed
+              ? "md:left-16 md:w-[calc(100%-4rem)]"
+              : "md:left-64 md:w-[calc(100%-16rem)]"
+          }
         `}
       >
+        {/* top highlight line */}
+        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF9900] to-transparent opacity-80" />
+
         <div className="h-full px-3 md:px-4">
           {/* MOBILE */}
           <div className="flex md:hidden items-center justify-between h-full w-full gap-2">
             {/* Left */}
-            <div className="flex items-center justify-start shrink-0">
-              <button
+            <div className="flex items-center shrink-0">
+              <motion.button
+                whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.08)" }}
+                whileTap={{ scale: 0.92 }}
                 type="button"
                 onClick={handleMobileMenuOpen}
-                className="flex items-center justify-center h-10 w-10 rounded-md hover:bg-[#37475A] active:scale-95 transition"
+                className="flex items-center justify-center h-10 w-10 rounded-xl transition shadow-sm"
                 aria-label="Open menu"
               >
                 <Menu className="w-6 h-6 text-white" />
-              </button>
+              </motion.button>
             </div>
 
             {/* Center */}
             <div className="flex-1 min-w-0">
-              <button
-                type="button"
+              <motion.button
                 ref={searchRef}
+                whileHover={{ scale: 1.01, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                type="button"
                 onClick={() => setOpenSearch(true)}
-                className="w-full flex items-center bg-white rounded-md px-3 py-2 gap-2 overflow-hidden"
+                className="w-full flex items-center bg-white rounded-xl px-3 py-2 gap-2 overflow-hidden shadow-md border border-white/70"
               >
-                <Search className="w-4 h-4 text-gray-500 shrink-0" />
+                <motion.div
+                  animate={{ x: [0, 1.5, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.2 }}
+                >
+                  <Search className="w-4 h-4 text-gray-500 shrink-0" />
+                </motion.div>
                 <span className="text-xs text-gray-500 truncate">Search</span>
-              </button>
+              </motion.button>
             </div>
 
             {/* Right */}
             <div
-              ref={profileRef}
+              ref={mobileProfileRef}
               className="relative flex items-center justify-end shrink-0"
             >
-              <button
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
                 type="button"
-                onClick={() => setOpenProfile((prev) => !prev)}
-                className="h-9 w-9 bg-[#FF9900] text-black rounded-full flex items-center justify-center font-bold"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMobileProfile((prev) => !prev);
+                }}
+                className="relative h-9 w-9 bg-gradient-to-br from-[#FFB84D] to-[#FF9900] text-black rounded-full flex items-center justify-center font-bold shadow-[0_6px_20px_rgba(255,153,0,0.35)]"
               >
-                A
-              </button>
-
-              {openProfile && (
-                <>
-                  {/* overlay */}
-                  <div
-                    className="fixed inset-0 z-[11990] bg-black/20"
-                    onClick={() => setOpenProfile(false)}
-                  />
-
-                  {/* dropdown */}
-                  <div className="fixed top-14 right-3 w-56 bg-white text-black rounded-md shadow-xl overflow-hidden z-[12000] border border-gray-200">
-                    <div className="px-4 py-3 border-b text-sm bg-gray-50">
-                      <div className="font-semibold">Amazon Seller</div>
-                      <div className="text-xs text-gray-500">
-                        seller@email.com
-                      </div>
-                    </div>
-
-                    <Link href="/profile" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<User size={16} />} label="Profile" />
-                    </Link>
-
-                    <Link href="/order" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Package size={16} />} label="Orders" />
-                    </Link>
-
-                    <Link href="/" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Truck size={16} />} label="Shipments" />
-                    </Link>
-
-                    <Link href="/reports" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<BarChart3 size={16} />} label="Reports" />
-                    </Link>
-
-                    <Link href="/" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Settings size={16} />} label="Settings" />
-                    </Link>
-
-                    <div className="border-t" />
-
-                    <MenuItem
-                      icon={<LogOut size={16} />}
-                      label="Logout"
-                      onClick={handleLogout}
-                      danger
-                    />
-                  </div>
-                </>
-              )}
+                <span>A</span>
+                <span className="absolute inset-0 rounded-full border border-white/40" />
+              </motion.button>
             </div>
           </div>
 
           {/* DESKTOP */}
           <div className="hidden md:flex items-center h-full w-full">
-            <div className="flex-1 min-w-0 flex items-center z-[9999]">
-              <button
-                type="button"
+            <div className="flex-1 min-w-0 flex items-center">
+              <motion.button
                 ref={searchRef}
+                whileHover={{ scale: 1.01, y: -1 }}
+                whileTap={{ scale: 0.985 }}
+                type="button"
                 onClick={() => setOpenSearch(true)}
-                className="w-full max-w-[420px] flex items-center bg-white rounded-md px-3 py-2 gap-2 overflow-hidden"
+                className="group relative w-full max-w-[440px] flex items-center bg-white rounded-xl px-3 py-2 gap-2 overflow-hidden border border-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
               >
-                <Search className="w-4 h-4 text-gray-500 shrink-0" />
-                <span className="text-xs text-gray-500 flex-1 truncate text-left">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-transparent via-[#FF9900]/10 to-transparent" />
+                <motion.div
+                  animate={{ x: [0, 1.5, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.4 }}
+                  className="relative z-10"
+                >
+                  <Search className="w-4 h-4 text-gray-500 shrink-0" />
+                </motion.div>
+
+                <span className="relative z-10 text-xs text-gray-500 flex-1 truncate text-left">
                   Search orders, products, shipments
                 </span>
-                <span className="text-[10px] text-gray-500 border px-2 py-0.5 rounded shrink-0">
+
+                <motion.span
+                  whileHover={{ scale: 1.04 }}
+                  className="relative z-10 text-[10px] text-gray-500 border px-2 py-0.5 rounded-md shrink-0 bg-gray-50"
+                >
                   Ctrl + K
-                </span>
-                <Mic className="w-4 h-4 text-[#FF9900] shrink-0" />
-              </button>
+                </motion.span>
+
+                <motion.div
+                  animate={{ scale: [1, 1.08, 1] }}
+                  transition={{ repeat: Infinity, duration: 2.2 }}
+                  className="relative z-10"
+                >
+                  <Mic className="w-4 h-4 text-[#FF9900] shrink-0" />
+                </motion.div>
+              </motion.button>
             </div>
 
             <div className="flex items-center gap-2 lg:gap-4 shrink-0 ml-4">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.08, rotate: 8 }}
+                whileTap={{ scale: 0.9 }}
                 type="button"
-                onClick={() => {
-                  setRefreshing(true);
-                  toast.loading("Updating data...", { id: "refresh" });
-
-                  setTimeout(() => {
-                    toast.success("Dashboard updated!", { id: "refresh" });
-                    window.location.reload();
-                  }, 1200);
-                }}
-                className="p-2 rounded-md hover:bg-[#37475A] transition"
+                onClick={handleRefresh}
+                className="p-2 rounded-xl hover:bg-white/10 transition"
               >
-                <RefreshCw
-                  className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
-                />
-              </button>
+                <motion.div
+                  animate={refreshing ? { rotate: 360 } : { rotate: 0 }}
+                  transition={
+                    refreshing
+                      ? { repeat: Infinity, duration: 0.8, ease: "linear" }
+                      : { duration: 0.2 }
+                  }
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </motion.div>
+              </motion.button>
 
-              <button
+              <motion.button
+                whileHover={{ y: -1, color: "#FF9900" }}
+                whileTap={{ scale: 0.96 }}
                 type="button"
-                className="flex items-center gap-1 text-xs hover:text-[#FF9900] px-2"
+                className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition"
               >
                 <HelpCircle className="w-4 h-4" />
                 Help
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
                 type="button"
-                className="relative p-2 rounded-md hover:bg-[#37475A] transition"
+                className="relative p-2 rounded-xl hover:bg-white/10 transition"
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-1 right-1 bg-[#FF9900] text-black text-[10px] px-1 rounded-full">
-                  3
-                </span>
-              </button>
-
-              <div ref={profileRef} className="relative">
-                <button
-                  type="button"
-                  onClick={() => setOpenProfile((prev) => !prev)}
-                  className="flex items-center gap-2 cursor-pointer hover:bg-[#37475A] px-2 py-1 rounded transition"
+                <motion.span
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.8 }}
+                  className="absolute top-1 right-1 bg-[#FF9900] text-black text-[10px] px-1 rounded-full font-semibold shadow"
                 >
-                  <div className="h-8 w-8 bg-[#FF9900] text-black rounded-full flex items-center justify-center font-bold">
+                  3
+                </motion.span>
+              </motion.button>
+
+              <div ref={desktopProfileRef} className="relative">
+                <motion.button
+                  whileHover={{ scale: 1.03, backgroundColor: "rgba(255,255,255,0.08)" }}
+                  whileTap={{ scale: 0.97 }}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDesktopProfile((prev) => !prev);
+                  }}
+                  className="flex items-center gap-2 cursor-pointer px-2 py-1.5 rounded-xl transition"
+                >
+                  <div className="relative h-8 w-8 bg-gradient-to-br from-[#FFB84D] to-[#FF9900] text-black rounded-full flex items-center justify-center font-bold shadow-[0_6px_20px_rgba(255,153,0,0.35)]">
                     A
+                    <span className="absolute inset-0 rounded-full border border-white/40" />
                   </div>
-                  <ChevronDown
-                    className={`w-4 h-4 transition ${
-                      openProfile ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
 
-                {openProfile && (
-                  <div className="absolute right-0 top-12 w-56 bg-white text-black rounded-md shadow-lg overflow-hidden z-[1300]">
-                    <div className="px-4 py-3 border-b text-sm bg-gray-50">
-                      <div className="font-semibold">Amazon Seller</div>
-                      <div className="text-xs text-gray-500">
-                        seller@email.com
-                      </div>
-                    </div>
+                  <motion.div
+                    animate={{ rotate: openDesktopProfile ? 180 : 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </motion.div>
+                </motion.button>
 
-                    <Link href="/profile" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<User size={16} />} label="Profile" />
-                    </Link>
-
-                    <Link href="/order" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Package size={16} />} label="Orders" />
-                    </Link>
-
-                    <Link href="/" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Truck size={16} />} label="Shipments" />
-                    </Link>
-
-                    <Link href="/reports" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<BarChart3 size={16} />} label="Reports" />
-                    </Link>
-
-                    <Link href="/" onClick={() => setOpenProfile(false)}>
-                      <MenuItem icon={<Settings size={16} />} label="Settings" />
-                    </Link>
-
-                    <div className="border-t" />
-
-                    <MenuItem
-                      icon={<LogOut size={16} />}
-                      label="Logout"
-                      onClick={handleLogout}
-                      danger
-                    />
-                  </div>
-                )}
+                <AnimatePresence>
+                  {openDesktopProfile && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                      className="absolute right-0 top-12 w-56 bg-white/95 backdrop-blur-xl text-black rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.18)] overflow-hidden z-[12000] border border-gray-200"
+                    >
+                      <ProfileContent
+                        onClose={closeAllProfiles}
+                        onLogout={handleLogout}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
+
+      {/* MOBILE PROFILE DROPDOWN */}
+      <AnimatePresence>
+        {openMobileProfile && (
+          <motion.div
+            className="md:hidden fixed inset-0 z-[12000]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpenMobileProfile(false)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: -14, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="absolute top-14 right-3 w-56 bg-white/95 backdrop-blur-xl text-black rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.22)] overflow-hidden border border-gray-200"
+            >
+              <ProfileContent
+                onClose={closeAllProfiles}
+                onLogout={handleLogout}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <SearchOverlay
         open={openSearch}
@@ -323,30 +376,72 @@ export default function TopBar({ collapsed, setMobileOpen }) {
   );
 }
 
-function MenuItem({ icon, label, href, onClick, danger }) {
-  const className = `
-    flex items-center gap-3 px-4 py-3 text-sm cursor-pointer
-    hover:bg-gray-100 transition
-    ${danger ? "text-red-600" : ""}
-  `;
-
-  if (href) {
-    return (
-      <Link href={href} className={className} onClick={onClick}>
-        {icon}
-        {label}
-      </Link>
-    );
-  }
-
+function ProfileContent({ onClose, onLogout }) {
   return (
-    <button
-      type="button"
-      className={`${className} w-full text-left`}
-      onClick={onClick}
-    >
-      {icon}
-      {label}
-    </button>
+    <>
+      <div className="px-4 py-3 border-b text-sm bg-gradient-to-r from-gray-50 to-orange-50">
+        <div className="font-semibold">Amazon Seller</div>
+        <div className="text-xs text-gray-500">seller@email.com</div>
+      </div>
+
+      <MenuLink
+        href="/profile"
+        icon={<User size={16} />}
+        label="Profile"
+        onClose={onClose}
+      />
+      <MenuLink
+        href="/order"
+        icon={<Package size={16} />}
+        label="Orders"
+        onClose={onClose}
+      />
+      <MenuLink
+        href="/"
+        icon={<Truck size={16} />}
+        label="Shipments"
+        onClose={onClose}
+      />
+      <MenuLink
+        href="/reports"
+        icon={<BarChart3 size={16} />}
+        label="Reports"
+        onClose={onClose}
+      />
+      <MenuLink
+        href="/"
+        icon={<Settings size={16} />}
+        label="Settings"
+        onClose={onClose}
+      />
+
+      <div className="border-t" />
+
+      <motion.button
+        whileHover={{ x: 4 }}
+        whileTap={{ scale: 0.98 }}
+        type="button"
+        onClick={onLogout}
+        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-left text-red-600 hover:bg-red-50 active:bg-red-100 transition"
+      >
+        <LogOut size={16} />
+        <span>Logout</span>
+      </motion.button>
+    </>
+  );
+}
+
+function MenuLink({ href, icon, label, onClose }) {
+  return (
+    <Link href={href} onClick={onClose}>
+      <motion.div
+        whileHover={{ x: 4 }}
+        whileTap={{ scale: 0.98 }}
+        className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition cursor-pointer"
+      >
+        {icon}
+        <span>{label}</span>
+      </motion.div>
+    </Link>
   );
 }

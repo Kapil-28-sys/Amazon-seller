@@ -170,7 +170,7 @@ export default function DynamicTable({
     search;
 
   return (
-   <div className="w-full max-w-[1450px] mx-auto space-y-8 sm:space-y-10 lg:space-y-4 px-4 sm:px-6 lg:px-10 xl:px-4 py-6 sm:py-3">
+   <div className="w-full max-w-[1450px] mx-auto mt-5 space-y-8 sm:space-y-10 lg:space-y-4 px-4 sm:px-6 lg:px-10 xl:px-4 py-8 sm:py-3">
       {/* Top Header */}
       <div className="rounded-3xl border border-slate-200 bg-white/95 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
         <div className="flex flex-col gap-5 p-5 md:p-6">
