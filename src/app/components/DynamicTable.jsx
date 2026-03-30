@@ -224,37 +224,64 @@ export default function DynamicTable({
   return (
     <div className="w-full max-w-[1450px] mx-auto mt-0 space-y-4 px-0 py-0">
       {!hideTopHeader && (
-        <div className="rounded-3xl border border-slate-200 bg-white/95 shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
+        <div
+          className="rounded-3xl border"
+          style={{
+            borderColor: "var(--amazon-border-light)",
+            background: "color-mix(in srgb, var(--amazon-bg-white) 95%, transparent)",
+            boxShadow: "0 8px 30px rgba(15,23,42,0.05)",
+          }}
+        >
           <div className="flex flex-col gap-5 p-5 md:p-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#fff4e5]">
-                    <SlidersHorizontal size={18} className="text-[#FF9900]" />
+                  <div
+                    className="flex h-9 w-9 items-center justify-center rounded-2xl"
+                    style={{
+                      background: "color-mix(in srgb, var(--amazon-btn-orange) 15%, white)",
+                    }}
+                  >
+                    <SlidersHorizontal
+                      size={18}
+                      className="text-[var(--amazon-orange)]"
+                    />
                   </div>
                   <div>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-[var(--amazon-text-primary)]">
                       {title}
                     </h1>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-[var(--amazon-text-secondary)]">
                       Manage and explore your records with smart filters
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="min-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <div
+                className="min-w-[220px] rounded-2xl border px-4 py-3"
+                style={{
+                  borderColor: "var(--amazon-border-light)",
+                  background: "var(--amazon-bg-main)",
+                }}
+              >
                 {loading ? (
                   <div className="animate-pulse space-y-2">
-                    <div className="h-3 w-28 rounded bg-slate-200" />
-                    <div className="h-5 w-16 rounded bg-slate-300" />
+                    <div
+                      className="h-3 w-28 rounded"
+                      style={{ background: "var(--amazon-border-light)" }}
+                    />
+                    <div
+                      className="h-5 w-16 rounded"
+                      style={{ background: "var(--amazon-border-medium)" }}
+                    />
                   </div>
                 ) : (
                   <>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--amazon-text-secondary)]">
                       Total Results
                     </p>
-                    <p className="mt-1 text-2xl font-bold text-slate-900">
+                    <p className="mt-1 text-2xl font-bold text-[var(--amazon-text-primary)]">
                       {filteredData.length}
                     </p>
                   </>
@@ -264,8 +291,17 @@ export default function DynamicTable({
 
             <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex flex-1 flex-wrap items-center gap-3">
-                <div className="flex min-w-[260px] flex-1 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all focus-within:border-[#FF9900] focus-within:ring-4 focus-within:ring-[#FF9900]/10 sm:w-[300px] sm:flex-none">
-                  <Search size={18} className="text-slate-400" />
+                <div
+                  className="flex min-w-[260px] flex-1 items-center gap-2 rounded-2xl border px-4 py-3 shadow-sm transition-all sm:w-[300px] sm:flex-none"
+                  style={{
+                    borderColor: "var(--amazon-border-light)",
+                    background: "var(--amazon-bg-white)",
+                  }}
+                >
+                  <Search
+                    size={18}
+                    className="text-[var(--amazon-text-secondary)]"
+                  />
                   <input
                     placeholder="Search records..."
                     value={search}
@@ -274,13 +310,22 @@ export default function DynamicTable({
                       setSearch(e.target.value);
                       setPage(1);
                     }}
-                    className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
+                    className="w-full bg-transparent text-sm outline-none placeholder:text-[var(--amazon-text-secondary)] disabled:cursor-not-allowed text-[var(--amazon-text-primary)]"
                   />
                 </div>
 
                 {!hideCategoryFilter && (
-                  <div className="flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-3 shadow-sm">
-                    <Filter size={16} className="text-slate-400" />
+                  <div
+                    className="flex items-center rounded-2xl border px-3 py-3 shadow-sm"
+                    style={{
+                      borderColor: "var(--amazon-border-light)",
+                      background: "var(--amazon-bg-white)",
+                    }}
+                  >
+                    <Filter
+                      size={16}
+                      className="text-[var(--amazon-text-secondary)]"
+                    />
                     <select
                       value={selectedCategory}
                       disabled={loading}
@@ -288,7 +333,7 @@ export default function DynamicTable({
                         setSelectedCategory(e.target.value);
                         setPage(1);
                       }}
-                      className="bg-transparent px-2 text-sm text-slate-700 outline-none disabled:cursor-not-allowed"
+                      className="bg-transparent px-2 text-sm outline-none disabled:cursor-not-allowed text-[var(--amazon-text-primary)]"
                     >
                       {categories.map((cat) => (
                         <option key={String(cat)} value={cat}>
@@ -310,7 +355,11 @@ export default function DynamicTable({
                         setToDate("");
                         setPage(1);
                       }}
-                      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none disabled:cursor-not-allowed"
+                      className="rounded-2xl border px-4 py-3 text-sm shadow-sm outline-none disabled:cursor-not-allowed text-[var(--amazon-text-primary)]"
+                      style={{
+                        borderColor: "var(--amazon-border-light)",
+                        background: "var(--amazon-bg-white)",
+                      }}
                     >
                       <option value="All">All Dates</option>
                       <option value="Today">Today</option>
@@ -319,7 +368,13 @@ export default function DynamicTable({
                     </select>
 
                     {dateMode === "Custom" && (
-                      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 shadow-sm">
+                      <div
+                        className="flex flex-wrap items-center gap-2 rounded-2xl border px-3 py-2.5 shadow-sm"
+                        style={{
+                          borderColor: "var(--amazon-border-light)",
+                          background: "var(--amazon-bg-white)",
+                        }}
+                      >
                         <input
                           type="date"
                           value={fromDate}
@@ -328,9 +383,14 @@ export default function DynamicTable({
                             setFromDate(e.target.value);
                             setPage(1);
                           }}
-                          className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none"
+                          className="rounded-xl border px-3 py-2 text-sm outline-none text-[var(--amazon-text-primary)]"
+                          style={{
+                            borderColor: "var(--amazon-border-light)",
+                          }}
                         />
-                        <span className="text-sm text-slate-400">to</span>
+                        <span className="text-sm text-[var(--amazon-text-secondary)]">
+                          to
+                        </span>
                         <input
                           type="date"
                           value={toDate}
@@ -339,7 +399,10 @@ export default function DynamicTable({
                             setToDate(e.target.value);
                             setPage(1);
                           }}
-                          className="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none"
+                          className="rounded-xl border px-3 py-2 text-sm outline-none text-[var(--amazon-text-primary)]"
+                          style={{
+                            borderColor: "var(--amazon-border-light)",
+                          }}
                         />
                       </div>
                     )}
@@ -355,7 +418,11 @@ export default function DynamicTable({
                     setRowsPerPage(Number(e.target.value));
                     setPage(1);
                   }}
-                  className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none disabled:cursor-not-allowed"
+                  className="rounded-2xl border px-4 py-3 text-sm shadow-sm outline-none disabled:cursor-not-allowed text-[var(--amazon-text-primary)]"
+                  style={{
+                    borderColor: "var(--amazon-border-light)",
+                    background: "var(--amazon-bg-white)",
+                  }}
                 >
                   <option value={5}>5 rows</option>
                   <option value={10}>10 rows</option>
@@ -372,7 +439,12 @@ export default function DynamicTable({
                       setSearch("");
                       setPage(1);
                     }}
-                    className="inline-flex items-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-500 transition hover:bg-red-100"
+                    className="inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition"
+                    style={{
+                      borderColor: "#fecaca",
+                      background: "#fef2f2",
+                      color: "#ef4444",
+                    }}
                   >
                     <X size={16} />
                     Clear
@@ -384,41 +456,69 @@ export default function DynamicTable({
         </div>
       )}
 
-      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.06)]">
+      <div
+        className="overflow-hidden rounded-3xl border"
+        style={{
+          borderColor: "var(--amazon-border-light)",
+          background: "var(--amazon-bg-white)",
+          boxShadow: "0 10px 35px rgba(15,23,42,0.06)",
+        }}
+      >
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1050px]">
             <thead>
-              <tr className="bg-gradient-to-r from-slate-50 to-slate-100/70">
+              <tr
+                style={{
+                  background:
+                    "linear-gradient(to right, color-mix(in srgb, var(--amazon-bg-main) 75%, white), color-mix(in srgb, var(--amazon-bg-main) 45%, white))",
+                }}
+              >
                 {tableHeaders.map((header, i) => (
                   <th
                     key={i}
-                    className="px-6 py-5 text-left text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500"
+                    className="px-6 py-5 text-left text-[11px] font-extrabold uppercase tracking-[0.18em] text-[var(--amazon-text-secondary)]"
                   >
                     {visibleKeys.length > 0
                       ? formatHeader(header)
                       : `Column ${i + 1}`}
                   </th>
                 ))}
-                <th className="w-[110px] px-6 py-5 text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-slate-500">
+                <th className="w-[110px] px-6 py-5 text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-[var(--amazon-text-secondary)]">
                   Action
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100">
+            <tbody
+              style={{
+                divideColor: "var(--amazon-border-light)",
+              }}
+              className="divide-y"
+            >
               {loading ? (
                 Array.from({ length: skeletonRows }).map((_, rowIndex) => (
-                  <tr key={rowIndex} className="bg-white">
+                  <tr key={rowIndex} style={{ background: "var(--amazon-bg-white)" }}>
                     {tableHeaders.map((_, colIndex) => (
                       <td key={colIndex} className="px-6 py-5">
                         <div className="animate-pulse space-y-2">
-                          <div className="h-4 w-full rounded bg-slate-200" />
-                          <div className="h-4 w-2/3 rounded bg-slate-100" />
+                          <div
+                            className="h-4 w-full rounded"
+                            style={{ background: "var(--amazon-border-light)" }}
+                          />
+                          <div
+                            className="h-4 w-2/3 rounded"
+                            style={{
+                              background: "color-mix(in srgb, var(--amazon-border-light) 60%, white)",
+                            }}
+                          />
                         </div>
                       </td>
                     ))}
                     <td className="px-6 py-5 text-center">
-                      <div className="mx-auto h-11 w-11 animate-pulse rounded-2xl bg-slate-200" />
+                      <div
+                        className="mx-auto h-11 w-11 animate-pulse rounded-2xl"
+                        style={{ background: "var(--amazon-border-light)" }}
+                      />
                     </td>
                   </tr>
                 ))
@@ -429,7 +529,17 @@ export default function DynamicTable({
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2, delay: i * 0.03 }}
-                    className="group transition-all hover:bg-[#fffaf2]"
+                    className="group transition-all"
+                    style={{
+                      background: "var(--amazon-bg-white)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background =
+                        "color-mix(in srgb, var(--amazon-btn-orange) 8%, white)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "var(--amazon-bg-white)";
+                    }}
                   >
                     {visibleKeys.map((key, j) => (
                       <td key={j} className="px-6 py-5 align-top">
@@ -445,7 +555,13 @@ export default function DynamicTable({
                         whileTap={{ scale: 0.96 }}
                         type="button"
                         onClick={() => handleDetailsClick(row)}
-                        className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-slate-500 shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:bg-[#fff7eb] hover:text-[#FF9900] hover:ring-[#ffd18a]"
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-2xl shadow-sm ring-1 transition-all duration-300"
+                        style={{
+                          background: "var(--amazon-bg-white)",
+                          color: "var(--amazon-text-secondary)",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+                          ringColor: "var(--amazon-border-light)",
+                        }}
                         title="View Details"
                       >
                         <Eye size={18} />
@@ -459,13 +575,19 @@ export default function DynamicTable({
                     colSpan={tableHeaders.length + 1}
                     className="py-24 text-center"
                   >
-                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-slate-100">
-                      <Inbox size={34} className="text-slate-300" />
+                    <div
+                      className="mx-auto flex h-20 w-20 items-center justify-center rounded-full"
+                      style={{ background: "var(--amazon-bg-main)" }}
+                    >
+                      <Inbox
+                        size={34}
+                        className="text-[var(--amazon-text-secondary)] opacity-50"
+                      />
                     </div>
-                    <h3 className="mt-5 text-lg font-semibold text-slate-700">
+                    <h3 className="mt-5 text-lg font-semibold text-[var(--amazon-text-primary)]">
                       No records found
                     </h3>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm text-[var(--amazon-text-secondary)]">
                       Try changing search or filter options
                     </p>
                   </td>
@@ -475,22 +597,31 @@ export default function DynamicTable({
           </table>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-slate-100 bg-white px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-sm text-slate-500">
+        <div
+          className="flex flex-col gap-4 border-t px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
+          style={{
+            borderColor: "var(--amazon-border-light)",
+            background: "var(--amazon-bg-white)",
+          }}
+        >
+          <div className="text-sm text-[var(--amazon-text-secondary)]">
             {loading ? (
-              <span className="inline-block h-4 w-36 animate-pulse rounded bg-slate-200" />
+              <span
+                className="inline-block h-4 w-36 animate-pulse rounded"
+                style={{ background: "var(--amazon-border-light)" }}
+              />
             ) : filteredData.length > 0 ? (
               <>
                 Showing{" "}
-                <span className="font-semibold text-slate-800">
+                <span className="font-semibold text-[var(--amazon-text-primary)]">
                   {(page - 1) * rowsPerPage + 1}
                 </span>{" "}
                 to{" "}
-                <span className="font-semibold text-slate-800">
+                <span className="font-semibold text-[var(--amazon-text-primary)]">
                   {Math.min(page * rowsPerPage, filteredData.length)}
                 </span>{" "}
                 of{" "}
-                <span className="font-semibold text-slate-800">
+                <span className="font-semibold text-[var(--amazon-text-primary)]">
                   {filteredData.length}
                 </span>{" "}
                 entries
@@ -504,7 +635,12 @@ export default function DynamicTable({
             <button
               disabled={loading || page === 1}
               onClick={() => setPage((prev) => prev - 1)}
-              className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="group flex h-11 w-11 items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-40"
+              style={{
+                borderColor: "var(--amazon-border-light)",
+                background: "var(--amazon-bg-white)",
+                color: "var(--amazon-text-secondary)",
+              }}
             >
               <ArrowLeft
                 size={16}
@@ -517,7 +653,8 @@ export default function DynamicTable({
                 Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-11 w-11 animate-pulse rounded-2xl bg-slate-200"
+                    className="h-11 w-11 animate-pulse rounded-2xl"
+                    style={{ background: "var(--amazon-border-light)" }}
                   />
                 ))
               ) : (
@@ -528,11 +665,20 @@ export default function DynamicTable({
                     <button
                       key={pageNum}
                       onClick={() => setPage(pageNum)}
-                      className={`flex h-11 min-w-[44px] items-center justify-center rounded-2xl px-3 text-sm font-bold transition-all ${
+                      className="flex h-11 min-w-[44px] items-center justify-center rounded-2xl px-3 text-sm font-bold transition-all"
+                      style={
                         isActive
-                          ? "bg-[#111827] text-white shadow-lg"
-                          : "border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
-                      }`}
+                          ? {
+                              background: "var(--amazon-blue)",
+                              color: "var(--amazon-text-white)",
+                              boxShadow: "0 10px 20px rgba(0,0,0,0.12)",
+                            }
+                          : {
+                              border: `1px solid var(--amazon-border-light)`,
+                              background: "var(--amazon-bg-white)",
+                              color: "var(--amazon-text-secondary)",
+                            }
+                      }
                     >
                       {pageNum}
                     </button>
@@ -544,7 +690,12 @@ export default function DynamicTable({
             <button
               disabled={loading || page === totalPages || totalPages === 0}
               onClick={() => setPage((prev) => prev + 1)}
-              className="group flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="group flex h-11 w-11 items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-40"
+              style={{
+                borderColor: "var(--amazon-border-light)",
+                background: "var(--amazon-bg-white)",
+                color: "var(--amazon-text-secondary)",
+              }}
             >
               <ArrowRight
                 size={16}
@@ -566,7 +717,8 @@ export default function DynamicTable({
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              className="absolute inset-0 backdrop-blur-sm"
+              style={{ background: "rgba(0,0,0,0.50)" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -577,21 +729,38 @@ export default function DynamicTable({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: 10 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              className="relative w-full max-w-4xl overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.22)]"
+              className="relative w-full max-w-4xl overflow-hidden rounded-[24px] border"
+              style={{
+                borderColor: "var(--amazon-border-light)",
+                background: "var(--amazon-bg-white)",
+                boxShadow: "0 20px 60px rgba(15,23,42,0.22)",
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="h-1 w-full bg-gradient-to-r from-[#FF9900] via-[#ffb84d] to-[#232F3E]" />
+              <div
+                className="h-1 w-full"
+                style={{
+                  background:
+                    "linear-gradient(to right, var(--amazon-orange), var(--amazon-btn-orange), var(--amazon-blue))",
+                }}
+              />
 
-              <div className="relative border-b border-slate-200 bg-white px-5 py-4 sm:px-6 sm:py-4">
+              <div
+                className="relative border-b px-5 py-4 sm:px-6 sm:py-4"
+                style={{
+                  borderColor: "var(--amazon-border-light)",
+                  background: "var(--amazon-bg-white)",
+                }}
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FF9900]">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--amazon-orange)]">
                       Amazon Panel
                     </p>
-                    <h3 className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+                    <h3 className="mt-2 text-xl font-bold text-[var(--amazon-text-primary)] sm:text-2xl">
                       Record Details
                     </h3>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-[var(--amazon-text-secondary)]">
                       Complete overview of the selected record
                     </p>
                   </div>
@@ -600,14 +769,22 @@ export default function DynamicTable({
                     whileHover={{ rotate: 90, scale: 1.05 }}
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setSelectedRow(null)}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border transition"
+                    style={{
+                      borderColor: "var(--amazon-border-light)",
+                      background: "var(--amazon-bg-white)",
+                      color: "var(--amazon-text-secondary)",
+                    }}
                   >
                     <X size={18} />
                   </motion.button>
                 </div>
               </div>
 
-              <div className="custom-scrollbar max-h-[60vh] overflow-y-auto bg-slate-50 px-5 py-5 sm:px-6 sm:py-6">
+              <div
+                className="custom-scrollbar max-h-[60vh] overflow-y-auto px-5 py-5 sm:px-6 sm:py-6"
+                style={{ background: "var(--amazon-bg-main)" }}
+              >
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {Object.entries(selectedRow)
                     .filter(
@@ -623,15 +800,25 @@ export default function DynamicTable({
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.22, delay: index * 0.03 }}
-                        className="group relative overflow-hidden rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                        className="group relative overflow-hidden rounded-[20px] border p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                        style={{
+                          borderColor: "var(--amazon-border-light)",
+                          background: "var(--amazon-bg-white)",
+                        }}
                       >
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--amazon-text-secondary)]">
                           {formatHeader(key)}
                         </p>
 
-                        <div className="mt-2 h-[3px] w-10 rounded-full bg-gradient-to-r from-[#FF9900] to-[#ffd18a]" />
+                        <div
+                          className="mt-2 h-[3px] w-10 rounded-full"
+                          style={{
+                            background:
+                              "linear-gradient(to right, var(--amazon-orange), color-mix(in srgb, var(--amazon-btn-orange) 45%, white))",
+                          }}
+                        />
 
-                        <div className="mt-3 text-sm leading-6 text-slate-700 break-words">
+                        <div className="mt-3 text-sm leading-6 break-words text-[var(--amazon-text-primary)]">
                           {renderDetailValue(value)}
                         </div>
                       </motion.div>
@@ -643,18 +830,38 @@ export default function DynamicTable({
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.24, delay: 0.1 }}
-                    className="mt-5 overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-sm"
+                    className="mt-5 overflow-hidden rounded-[22px] border shadow-sm"
+                    style={{
+                      borderColor: "var(--amazon-border-light)",
+                      background: "var(--amazon-bg-white)",
+                    }}
                   >
-                    <div className="border-b border-slate-200 bg-gradient-to-r from-orange-50 to-white px-4 py-4 sm:px-5">
+                    <div
+                      className="border-b px-4 py-4 sm:px-5"
+                      style={{
+                        borderColor: "var(--amazon-border-light)",
+                        background:
+                          "linear-gradient(to right, color-mix(in srgb, var(--amazon-btn-orange) 10%, white), var(--amazon-bg-white))",
+                      }}
+                    >
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-100">
-                          <MapPin size={18} className="text-[#FF9900]" />
+                        <div
+                          className="flex h-10 w-10 items-center justify-center rounded-2xl"
+                          style={{
+                            background:
+                              "color-mix(in srgb, var(--amazon-btn-orange) 18%, white)",
+                          }}
+                        >
+                          <MapPin
+                            size={18}
+                            className="text-[var(--amazon-orange)]"
+                          />
                         </div>
                         <div>
-                          <h4 className="text-lg font-bold text-slate-900">
+                          <h4 className="text-lg font-bold text-[var(--amazon-text-primary)]">
                             Shipping Address
                           </h4>
-                          <p className="text-sm text-slate-500">
+                          <p className="text-sm text-[var(--amazon-text-secondary)]">
                             Delivery information linked with this order
                           </p>
                         </div>
@@ -663,7 +870,13 @@ export default function DynamicTable({
 
                     <div className="px-4 py-4 sm:px-5 sm:py-5">
                       {shippingLoading ? (
-                        <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-slate-600">
+                        <div
+                          className="flex items-center gap-3 rounded-2xl border px-4 py-4 text-[var(--amazon-text-secondary)]"
+                          style={{
+                            borderColor: "var(--amazon-border-light)",
+                            background: "var(--amazon-bg-main)",
+                          }}
+                        >
                           <Loader2 size={18} className="animate-spin" />
                           Loading shipping address...
                         </div>
@@ -712,7 +925,14 @@ export default function DynamicTable({
                           />
                         </div>
                       ) : (
-                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                        <div
+                          className="rounded-2xl border px-4 py-4 text-sm"
+                          style={{
+                            borderColor: "var(--amazon-border-light)",
+                            background: "var(--amazon-bg-main)",
+                            color: "var(--amazon-text-secondary)",
+                          }}
+                        >
                           No shipping address found.
                         </div>
                       )}
@@ -721,12 +941,23 @@ export default function DynamicTable({
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-3 border-t border-slate-200 bg-white px-5 py-4 sm:px-6">
+              <div
+                className="flex items-center justify-end gap-3 border-t px-5 py-4 sm:px-6"
+                style={{
+                  borderColor: "var(--amazon-border-light)",
+                  background: "var(--amazon-bg-white)",
+                }}
+              >
                 <motion.button
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedRow(null)}
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                  className="rounded-xl border px-4 py-2.5 text-sm font-medium transition"
+                  style={{
+                    borderColor: "var(--amazon-border-light)",
+                    background: "var(--amazon-bg-white)",
+                    color: "var(--amazon-text-primary)",
+                  }}
                 >
                   Cancel
                 </motion.button>
@@ -735,7 +966,13 @@ export default function DynamicTable({
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedRow(null)}
-                  className="rounded-xl bg-gradient-to-r from-[#FF9900] to-[#f7a928] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(255,153,0,0.32)] transition hover:shadow-[0_14px_28px_rgba(255,153,0,0.4)]"
+                  className="rounded-xl px-5 py-2.5 text-sm font-semibold transition"
+                  style={{
+                    background:
+                      "linear-gradient(to right, var(--amazon-orange), var(--amazon-btn-orange))",
+                    color: "var(--amazon-text-white)",
+                    boxShadow: "0 10px 24px rgba(255,153,0,0.32)",
+                  }}
                 >
                   Done
                 </motion.button>
@@ -769,11 +1006,17 @@ export default function DynamicTable({
 
 function DetailBox({ label, value }) {
   return (
-    <div className="rounded-[18px] border border-slate-200 bg-slate-50 px-4 py-3">
-      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+    <div
+      className="rounded-[18px] border px-4 py-3"
+      style={{
+        borderColor: "var(--amazon-border-light)",
+        background: "var(--amazon-bg-main)",
+      }}
+    >
+      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--amazon-text-secondary)]">
         {label}
       </p>
-      <p className="mt-2 break-words text-sm font-medium leading-6 text-slate-800">
+      <p className="mt-2 break-words text-sm font-medium leading-6 text-[var(--amazon-text-primary)]">
         {value || "N/A"}
       </p>
     </div>
@@ -802,12 +1045,12 @@ function renderCell(value) {
   if (React.isValidElement(value)) return value;
 
   if (value === null || value === undefined || value === "") {
-    return <span className="italic text-slate-300">Empty</span>;
+    return <span className="italic text-[var(--amazon-text-secondary)] opacity-50">Empty</span>;
   }
 
   return (
     <span
-      className="break-words text-sm leading-6 text-slate-700"
+      className="break-words text-sm leading-6 text-[var(--amazon-text-primary)]"
       style={{
         display: "-webkit-box",
         WebkitLineClamp: 2,
@@ -824,7 +1067,7 @@ function renderDetailValue(value) {
   if (React.isValidElement(value)) return value;
 
   if (value === null || value === undefined || value === "") {
-    return <span className="italic text-slate-300">Empty</span>;
+    return <span className="italic text-[var(--amazon-text-secondary)] opacity-50">Empty</span>;
   }
 
   if (
@@ -832,11 +1075,21 @@ function renderDetailValue(value) {
     typeof value === "number" ||
     typeof value === "boolean"
   ) {
-    return <span className="font-medium text-slate-700">{String(value)}</span>;
+    return (
+      <span className="font-medium text-[var(--amazon-text-primary)]">
+        {String(value)}
+      </span>
+    );
   }
 
   return (
-    <pre className="whitespace-pre-wrap break-words rounded-xl bg-slate-50 p-3 font-mono text-xs text-slate-700 sm:text-sm">
+    <pre
+      className="whitespace-pre-wrap break-words rounded-xl p-3 font-mono text-xs sm:text-sm"
+      style={{
+        background: "var(--amazon-bg-main)",
+        color: "var(--amazon-text-primary)",
+      }}
+    >
       {getPrettyValue(value)}
     </pre>
   );

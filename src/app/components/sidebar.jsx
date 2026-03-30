@@ -12,15 +12,14 @@ import {
   HiOutlineBolt,
   HiOutlineXMark,
 } from "react-icons/hi2";
-import { getClientRole } from "./lib/auth";
+
 const ROLE = {
   MAIN_OWNER: "main_owner",
   DEVELOPER: "developer",
   SELLER: "seller",
 };
-const role = getClientRole();
+
 const menuItems = [
-  /* ================= COMMON ================= */
   {
     label: "Dashboard",
     href: "/dashboard",
@@ -28,7 +27,7 @@ const menuItems = [
     roles: [ROLE.MAIN_OWNER, ROLE.DEVELOPER, ROLE.SELLER],
   },
 
-  /* ================= OWNER ================= */
+  /* OWNER */
   {
     label: "Sellers",
     href: "/owner/sellers",
@@ -90,14 +89,14 @@ const menuItems = [
     roles: [ROLE.MAIN_OWNER],
   },
 
-  /* ================= SELLER ================= */
+  /* SELLER */
   {
     label: "Inventory",
     href: "/seller-panel/inventory",
     icon: <HiOutlineHome />,
     roles: [ROLE.SELLER],
   },
-    {
+  {
     label: "Category",
     href: "/seller-panel/listing",
     icon: <HiOutlineChartBar />,
@@ -121,8 +120,8 @@ const menuItems = [
     icon: <HiOutlineChartBar />,
     roles: [ROLE.SELLER],
   },
-   {
-    label: " Reports",
+  {
+    label: "Reports",
     href: "/seller-panel/reports",
     icon: <HiOutlineArrowPath />,
     roles: [ROLE.SELLER],
@@ -134,7 +133,7 @@ const menuItems = [
     roles: [ROLE.SELLER],
   },
 
-  /* ================= DEVELOPER ================= */
+  /* DEVELOPER */
   {
     label: "Permissions",
     href: "/developer-panel/Permissions",
@@ -168,7 +167,6 @@ export default function Sidebar({
   setMobileOpen,
 }) {
   const pathname = usePathname();
-  const [openMenu, setOpenMenu] = useState(null);
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
@@ -182,10 +180,6 @@ export default function Sidebar({
     if (!userRole) return [];
     return menuItems.filter((item) => item.roles.includes(userRole));
   }, [userRole]);
-
-  const toggleMenu = (menu) => {
-    setOpenMenu(openMenu === menu ? null : menu);
-  };
 
   const closeSidebar = () => {
     if (window.innerWidth < 768) {
@@ -203,11 +197,13 @@ export default function Sidebar({
 
   return (
     <>
+      {/* Overlay */}
       <div
         onClick={() => setMobileOpen(false)}
         className={`
           fixed inset-0 z-[1200] md:hidden
-          bg-black/40 backdrop-blur-[2px]
+          bg-[color:var(--sidebar-overlay)]
+          backdrop-blur-[2px]
           transition-all duration-300
           ${
             mobileOpen
@@ -217,15 +213,21 @@ export default function Sidebar({
         `}
       />
 
+      {/* Sidebar */}
       <aside
+        id="sidebar"
+        data-collapsed={collapsed ? "true" : "false"}
         className={`
           fixed left-0 top-14 md:top-0
           h-[calc(100vh-56px)] md:h-screen
-          bg-gradient-to-b from-[#232F3E] via-[#1f2937] to-[#111827]
-          text-white
+          bg-gradient-to-b
+          from-[var(--amazon-blue)]
+          via-[var(--amazon-light-blue)]
+          to-[var(--amazon-footer)]
+          text-[var(--amazon-text-white)]
           z-[1250]
           flex flex-col
-          border-r border-white/10
+          border-r border-[color:var(--sidebar-border)]
           shadow-2xl
           transition-all duration-300 ease-in-out
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
@@ -233,13 +235,14 @@ export default function Sidebar({
           ${sidebarExpanded ? "w-64" : "w-16"}
         `}
       >
+        {/* Top Logo Area */}
         <div
           onClick={toggleCollapse}
-          className="group relative flex items-center gap-3 px-3 py-4 border-b border-white/10 cursor-pointer overflow-hidden"
+          className="group relative flex items-center gap-3 px-3 py-4 border-b border-[color:var(--sidebar-border)] cursor-pointer overflow-hidden"
         >
-          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-[color:var(--sidebar-soft)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          <div className="relative z-10 w-9 h-9 bg-[#FF9900] text-black font-extrabold flex items-center justify-center rounded-lg shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+          <div className="relative z-10 flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--amazon-orange)] text-black font-extrabold shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
             A
           </div>
 
@@ -260,7 +263,7 @@ export default function Sidebar({
 
           <button
             type="button"
-            className="relative z-10 ml-auto md:hidden p-1 rounded-full hover:bg-white/10 transition"
+            className="relative z-10 ml-auto rounded-full p-1 transition hover:bg-[color:var(--sidebar-hover)] md:hidden"
             onClick={(e) => {
               e.stopPropagation();
               setMobileOpen(false);
@@ -270,15 +273,20 @@ export default function Sidebar({
           </button>
         </div>
 
+        {/* Role Box */}
         <div className="px-3 pt-3">
           {sidebarExpanded && (
-            <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/80">
-              Role: <span className="font-semibold text-[#FFB84D]">{userRole}</span>
+            <div className="rounded-xl border border-[color:var(--sidebar-border)] bg-[color:var(--sidebar-soft)] px-3 py-2 text-xs text-white/80">
+              Role:{" "}
+              <span className="font-semibold text-[var(--amazon-btn-orange)]">
+                {userRole}
+              </span>
             </div>
           )}
         </div>
 
-        <nav className="flex-1 px-2 py-3 space-y-2 overflow-y-auto">
+        {/* Menu */}
+        <nav className="flex-1 space-y-2 overflow-y-auto px-2 py-3">
           {allowedMenuItems.map((item) => (
             <MenuItem
               key={item.href}
@@ -302,19 +310,22 @@ function MenuItem({ icon, label, href, open, active, closeSidebar }) {
       href={href}
       onClick={closeSidebar}
       className={`
-        group relative overflow-hidden flex items-center gap-3 px-3 py-3 rounded-xl
+        group relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-3
         transition-all duration-300 ease-in-out transform hover:scale-[1.02]
         ${
           active
-            ? "bg-gradient-to-r from-[#37475A] to-[#2d3a4e] border-l-4 border-[#FF9900] shadow-lg shadow-black/20"
-            : "hover:bg-white/10"
+            ? "bg-gradient-to-r from-[var(--amazon-light-blue)] to-[var(--amazon-blue)] border-l-4 border-[var(--amazon-orange)] shadow-lg"
+            : "hover:bg-[color:var(--sidebar-hover)]"
         }
       `}
+      style={{
+        boxShadow: active ? "0 10px 20px var(--sidebar-shadow)" : "none",
+      }}
     >
       <span
         className={`
           relative z-10 text-xl transition-all duration-300
-          ${active ? "text-[#FFB84D] scale-110" : "group-hover:scale-110"}
+          ${active ? "text-[var(--amazon-btn-orange)] scale-110" : "group-hover:scale-110"}
         `}
       >
         {icon}
@@ -326,7 +337,7 @@ function MenuItem({ icon, label, href, open, active, closeSidebar }) {
           ${open ? "max-w-[160px] opacity-100" : "max-w-0 opacity-0"}
         `}
       >
-        <span className="text-sm font-semibold whitespace-nowrap tracking-wide">
+        <span className="whitespace-nowrap text-sm font-semibold tracking-wide text-[var(--amazon-text-white)]">
           {label}
         </span>
       </div>

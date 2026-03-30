@@ -312,39 +312,39 @@ export default function Order() {
       purchaseDateRaw: order.PurchaseDate || "",
 
       "Order ID": (
-        <span className="font-semibold text-indigo-600">
+        <span style={{ fontWeight: 600, color: "var(--amazon-link-blue)" }}>
           {order.AmazonOrderId || "N/A"}
         </span>
       ),
       "Sales Channel": (
-        <span className="text-slate-700 font-medium">
+        <span style={{ color: "var(--amazon-text-primary)", fontWeight: 500 }}>
           {order.SalesChannel || "N/A"}
         </span>
       ),
       "Order Type": (
-        <span className="text-slate-600">{order.OrderType || "N/A"}</span>
+        <span style={{ color: "var(--amazon-text-secondary)" }}>
+          {order.OrderType || "N/A"}
+        </span>
       ),
       Amount: (
-        <span className="font-bold text-slate-900">
+        <span style={{ fontWeight: 700, color: "var(--amazon-text-primary)" }}>
           ₹{Number(order?.OrderTotal?.Amount || 0).toLocaleString("en-IN")}
         </span>
       ),
       Status: (
         <span
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm ${getStatusStyle(
-            order.OrderStatus
-          )}`}
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider shadow-sm"
+          style={getStatusStyle(order.OrderStatus)}
         >
           <span
-            className={`w-1.5 h-1.5 rounded-full ${getStatusDotStyle(
-              order.OrderStatus
-            )}`}
+            className="h-1.5 w-1.5 rounded-full"
+            style={{ background: getStatusDotStyle(order.OrderStatus) }}
           />
           {order.OrderStatus || "N/A"}
         </span>
       ),
       "Purchase Date": (
-        <span className="text-slate-500 text-sm">
+        <span style={{ color: "var(--amazon-text-secondary)", fontSize: "14px" }}>
           {formatDate(order.PurchaseDate)}
         </span>
       ),
@@ -409,37 +409,77 @@ export default function Order() {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/40 p-4 md:p-8 space-y-6"
+      className="min-h-screen space-y-6 p-4 md:p-8"
+      style={{
+        background:
+          "linear-gradient(to bottom right, var(--amazon-bg-main), var(--amazon-bg-white), color-mix(in srgb, var(--amazon-link-blue) 6%, white))",
+      }}
     >
       <motion.div
         variants={itemVariants}
-        className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-sm"
+        className="relative overflow-hidden rounded-3xl border shadow-sm"
+        style={{
+          borderColor: "var(--amazon-border-light)",
+          background: "color-mix(in srgb, var(--amazon-bg-white) 80%, transparent)",
+          backdropFilter: "blur(16px)",
+        }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-transparent to-sky-500/5" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, color-mix(in srgb, var(--amazon-link-blue) 6%, transparent), transparent, color-mix(in srgb, var(--amazon-orange) 6%, transparent))",
+          }}
+        />
 
-        <div className="relative px-5 py-6 md:px-7 md:py-7 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="relative flex flex-col justify-between gap-4 px-5 py-6 md:px-7 md:py-7 lg:flex-row lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-[11px] font-bold tracking-wide border border-indigo-100">
+            <div
+              className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-bold tracking-wide"
+              style={{
+                background: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+                color: "var(--amazon-link-blue)",
+                borderColor: "color-mix(in srgb, var(--amazon-link-blue) 18%, white)",
+              }}
+            >
               <ShoppingBag size={13} />
               Live Order Dashboard
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mt-3">
+            <h1
+              className="mt-3 text-2xl font-black tracking-tight md:text-3xl"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
               Order Management
             </h1>
 
-            <p className="text-sm text-slate-500 mt-2 flex items-center gap-2">
-              <ArrowRight size={14} className="text-indigo-500" />
+            <p
+              className="mt-2 flex items-center gap-2 text-sm"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
+              <ArrowRight size={14} style={{ color: "var(--amazon-link-blue)" }} />
               Showing live order data from your API
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 min-w-[220px]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">
+          <div
+            className="min-w-[220px] rounded-2xl border px-4 py-3"
+            style={{
+              borderColor: "var(--amazon-border-light)",
+              background: "var(--amazon-bg-main)",
+            }}
+          >
+            <p
+              className="text-[10px] font-bold uppercase tracking-[0.2em]"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
               Selected Range
             </p>
-            <div className="mt-2 flex items-center gap-2 text-slate-700 font-semibold text-sm">
-              <CalendarRange size={15} className="text-indigo-500" />
+            <div
+              className="mt-2 flex items-center gap-2 text-sm font-semibold"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
+              <CalendarRange size={15} style={{ color: "var(--amazon-link-blue)" }} />
               <span>
                 {formatInputDateDMY(startDate)} to {formatInputDateDMY(endDate)}
               </span>
@@ -447,89 +487,92 @@ export default function Order() {
           </div>
         </div>
       </motion.div>
-     {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700 font-medium"
-        >
-          {error}
-        </motion.div>
-      )}
 
-      {!error && message && orders.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-700 font-medium"
-        >
-          {message}
-        </motion.div>
-      )}
       <motion.div variants={itemVariants} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           <StatCard
             label="Total Orders"
             value={totalOrders}
             icon={<Package size={18} />}
-            color="indigo"
+            color="primary"
           />
 
           <StatCard
             label="Delivered / Shipped"
             value={deliveredOrders}
             icon={<CheckCircle size={18} />}
-            color="emerald"
+            color="success"
           />
 
           <StatCard
             label="Pending"
             value={pendingOrders}
             icon={<Clock size={18} />}
-            color="orange"
+            color="warning"
           />
 
           <StatCard
             label="Total Revenue"
             value={`₹${totalRevenue.toLocaleString("en-IN")}`}
             icon={<DollarSign size={18} />}
-            color="blue"
+            color="info"
           />
 
           <StatCard
             label="Cancelled Orders"
             value={cancelledOrders}
             icon={<XCircle size={18} />}
-            color="red"
+            color="danger"
           />
         </div>
       </motion.div>
 
       <motion.div
         variants={itemVariants}
-        className="bg-white rounded-3xl border border-slate-200 shadow-sm p-4 md:p-6 space-y-6"
+        className="space-y-6 rounded-3xl p-4 md:p-6"
+        style={{
+          background: "var(--amazon-bg-white)",
+          border: "1px solid var(--amazon-border-light)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+        }}
       >
-        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex items-start gap-3">
-            <div className="p-2.5 rounded-2xl bg-sky-50 text-sky-600 shrink-0">
+            <div
+              className="shrink-0 rounded-2xl p-2.5"
+              style={{
+                background: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+                color: "var(--amazon-link-blue)",
+              }}
+            >
               <Filter size={18} />
             </div>
 
             <div>
-              <h2 className="text-base md:text-lg font-bold text-slate-800">
+              <h2
+                className="text-base font-bold md:text-lg"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Order Filters & Export
               </h2>
-              <p className="text-sm text-slate-500 mt-1">
+              <p
+                className="mt-1 text-sm"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
                 Filter orders by date, search, and status. Export filtered data
                 anytime.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+          <div className="flex w-full flex-col gap-3 sm:flex-row xl:w-auto">
             <button
               onClick={handleClearAllFilters}
-              className="h-10 px-4 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto"
+              className="flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-all duration-300 sm:w-auto"
+              style={{
+                background: "var(--amazon-bg-main)",
+                color: "var(--amazon-text-primary)",
+              }}
             >
               <RotateCcw size={15} />
               Clear Filters
@@ -537,7 +580,11 @@ export default function Order() {
 
             <button
               onClick={exportCsv}
-              className="h-10 px-4 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto"
+              className="flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-all duration-300 sm:w-auto"
+              style={{
+                background: "var(--amazon-success-strong)",
+                color: "var(--amazon-text-white)",
+              }}
             >
               <Download size={15} />
               Export CSV
@@ -545,19 +592,34 @@ export default function Order() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 md:p-5">
+        <div
+          className="rounded-2xl p-4 md:p-5"
+          style={{
+            border: "1px solid var(--amazon-border-light)",
+            background: "color-mix(in srgb, var(--amazon-bg-main) 70%, white)",
+          }}
+        >
           <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-800">
+            <h3
+              className="text-sm font-bold"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
               Fetch Orders by Date
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p
+              className="mt-1 text-xs"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
               Select a date range to load orders from the API.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+          <div className="grid grid-cols-1 items-end gap-4 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Start Date
               </label>
               <input
@@ -565,12 +627,20 @@ export default function Order() {
                 value={startDate}
                 max={endDate || undefined}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full h-10 rounded-xl border border-slate-300 bg-white px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-white)",
+                  color: "var(--amazon-text-primary)",
+                }}
               />
             </div>
 
             <div className="lg:col-span-4">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 End Date
               </label>
               <input
@@ -578,14 +648,23 @@ export default function Order() {
                 value={endDate}
                 min={startDate || undefined}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full h-10 rounded-xl border border-slate-300 bg-white px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-white)",
+                  color: "var(--amazon-text-primary)",
+                }}
               />
             </div>
 
-            <div className="lg:col-span-4 flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col gap-3 lg:col-span-4 sm:flex-row">
               <button
                 onClick={handleApplyFilter}
-                className="h-10 px-4 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 w-full"
+                className="flex h-10 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-all duration-300"
+                style={{
+                  background: "var(--amazon-link-blue)",
+                  color: "var(--amazon-text-white)",
+                }}
               >
                 <Search size={15} />
                 Apply Filter
@@ -593,7 +672,12 @@ export default function Order() {
 
               <button
                 onClick={handleTodayFilter}
-                className="h-10 px-4 rounded-xl bg-white border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-100 transition-all duration-300 flex items-center justify-center gap-2 w-full"
+                className="flex h-10 w-full items-center justify-center gap-2 rounded-xl border px-4 text-sm font-semibold transition-all duration-300"
+                style={{
+                  background: "var(--amazon-bg-white)",
+                  borderColor: "var(--amazon-border-medium)",
+                  color: "var(--amazon-text-primary)",
+                }}
               >
                 <RefreshCcw size={15} />
                 Today
@@ -602,19 +686,34 @@ export default function Order() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+        <div
+          className="rounded-2xl p-4 md:p-5"
+          style={{
+            border: "1px solid var(--amazon-border-light)",
+            background: "var(--amazon-bg-white)",
+          }}
+        >
           <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-800">
+            <h3
+              className="text-sm font-bold"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
               Filter Visible Records
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p
+              className="mt-1 text-xs"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
               Search and refine the currently loaded orders.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
             <div className="xl:col-span-2">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Search
               </label>
               <input
@@ -622,18 +721,31 @@ export default function Order() {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Search by Order ID, channel, status..."
-                className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-main)",
+                  color: "var(--amazon-text-primary)",
+                }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Status
               </label>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-main)",
+                  color: "var(--amazon-text-primary)",
+                }}
               >
                 <option>All</option>
                 <option>Pending</option>
@@ -647,13 +759,21 @@ export default function Order() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Sales Channel
               </label>
               <select
                 value={channelFilter}
                 onChange={(e) => setChannelFilter(e.target.value)}
-                className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-main)",
+                  color: "var(--amazon-text-primary)",
+                }}
               >
                 {salesChannels.map((channel) => (
                   <option key={channel} value={channel}>
@@ -664,13 +784,21 @@ export default function Order() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                className="mb-2 block text-sm font-semibold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Order Type
               </label>
               <select
                 value={orderTypeFilter}
                 onChange={(e) => setOrderTypeFilter(e.target.value)}
-                className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 px-3 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="h-10 w-full rounded-xl border px-3 text-sm outline-none transition-all duration-300"
+                style={{
+                  borderColor: "var(--amazon-border-medium)",
+                  background: "var(--amazon-bg-main)",
+                  color: "var(--amazon-text-primary)",
+                }}
               >
                 {orderTypes.map((type) => (
                   <option key={type} value={type}>
@@ -683,15 +811,33 @@ export default function Order() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <div className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 font-medium">
+          <div
+            className="rounded-full px-3 py-1.5 font-medium"
+            style={{
+              background: "var(--amazon-bg-main)",
+              color: "var(--amazon-text-primary)",
+            }}
+          >
             Showing: {filteredOrders.length} orders
           </div>
 
-          <div className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-medium">
+          <div
+            className="rounded-full px-3 py-1.5 font-medium"
+            style={{
+              background: "var(--amazon-success-soft)",
+              color: "var(--amazon-success-strong)",
+            }}
+          >
             Filtered Revenue: ₹{filteredRevenue.toLocaleString("en-IN")}
           </div>
 
-          <div className="px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 font-medium">
+          <div
+            className="rounded-full px-3 py-1.5 font-medium"
+            style={{
+              background: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+              color: "var(--amazon-link-blue)",
+            }}
+          >
             Status: {statusFilter}
           </div>
         </div>
@@ -699,19 +845,39 @@ export default function Order() {
 
       <motion.div
         variants={itemVariants}
-        className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden"
+        className="overflow-hidden rounded-3xl shadow-sm"
+        style={{
+          background: "var(--amazon-bg-white)",
+          border: "1px solid var(--amazon-border-light)",
+        }}
       >
-        <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-50 to-white">
+        <div
+          className="flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center"
+          style={{
+            borderBottom: "1px solid var(--amazon-border-light)",
+            background:
+              "linear-gradient(to right, color-mix(in srgb, var(--amazon-bg-main) 70%, white), var(--amazon-bg-white))",
+          }}
+        >
           <div>
-            <h3 className="text-base md:text-lg font-bold text-slate-800">
+            <h3
+              className="text-base font-bold md:text-lg"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
               Order Records
             </h3>
-            <p className="text-sm text-slate-500 mt-1">
+            <p
+              className="mt-1 text-sm"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
               Detailed order listing with real-time status visibility
             </p>
           </div>
 
-          <div className="text-sm text-slate-500 font-medium">
+          <div
+            className="text-sm font-medium"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
             {loading
               ? "Loading orders..."
               : `Showing ${filteredOrders.length} of ${orders.length} orders`}
@@ -719,12 +885,26 @@ export default function Order() {
         </div>
 
         {!loading && !error && filteredOrders.length === 0 ? (
-          <div className="p-10 md:p-14 text-center">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-500 mb-4">
+          <div className="p-10 text-center md:p-14">
+            <div
+              className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
+              style={{
+                background: "var(--amazon-bg-main)",
+                color: "var(--amazon-text-secondary)",
+              }}
+            >
               <ShoppingBag size={24} />
             </div>
-            <h3 className="text-lg font-bold text-slate-700">No Orders Found</h3>
-            <p className="text-slate-500 mt-2">
+            <h3
+              className="text-lg font-bold"
+              style={{ color: "var(--amazon-text-primary)" }}
+            >
+              No Orders Found
+            </h3>
+            <p
+              className="mt-2"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
               No orders matched your current filters.
             </p>
           </div>
@@ -755,58 +935,101 @@ export default function Order() {
 
 function StatCard({ label, value, icon, color }) {
   const colorMap = {
-    indigo: {
-      soft: "bg-indigo-50 border-indigo-100 text-indigo-600",
-      accent: "from-indigo-500 to-indigo-600",
+    primary: {
+      softBg: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+      softBorder: "color-mix(in srgb, var(--amazon-link-blue) 18%, white)",
+      softText: "var(--amazon-link-blue)",
+      accent: "linear-gradient(to right, var(--amazon-link-blue), var(--amazon-blue))",
     },
-    emerald: {
-      soft: "bg-emerald-50 border-emerald-100 text-emerald-600",
-      accent: "from-emerald-500 to-emerald-600",
+    success: {
+      softBg: "var(--amazon-success-soft)",
+      softBorder: "color-mix(in srgb, var(--amazon-success-strong) 18%, white)",
+      softText: "var(--amazon-success-strong)",
+      accent: "linear-gradient(to right, var(--amazon-success), var(--amazon-success-strong))",
     },
-    orange: {
-      soft: "bg-amber-50 border-amber-100 text-amber-600",
-      accent: "from-amber-500 to-orange-500",
+    warning: {
+      softBg: "color-mix(in srgb, var(--amazon-btn-yellow) 45%, white)",
+      softBorder: "color-mix(in srgb, var(--amazon-orange) 18%, white)",
+      softText: "var(--amazon-orange)",
+      accent: "linear-gradient(to right, var(--amazon-btn-yellow-hover), var(--amazon-orange))",
     },
-    blue: {
-      soft: "bg-blue-50 border-blue-100 text-blue-600",
-      accent: "from-blue-500 to-sky-500",
+    info: {
+      softBg: "color-mix(in srgb, var(--amazon-link-blue) 8%, white)",
+      softBorder: "color-mix(in srgb, var(--amazon-link-blue) 16%, white)",
+      softText: "var(--amazon-link-blue)",
+      accent: "linear-gradient(to right, var(--amazon-link-blue), var(--amazon-blue))",
     },
-    red: {
-      soft: "bg-red-50 border-red-100 text-red-600",
-      accent: "from-red-500 to-rose-500",
+    danger: {
+      softBg: "var(--amazon-danger-soft)",
+      softBorder: "var(--amazon-danger-border)",
+      softText: "var(--amazon-danger)",
+      accent: "linear-gradient(to right, var(--amazon-danger), #fb7185)",
     },
   };
 
-  const selected = colorMap[color] || colorMap.indigo;
+  const selected = colorMap[color] || colorMap.primary;
 
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
       transition={{ duration: 0.22 }}
-      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md"
+      className="group relative overflow-hidden rounded-2xl p-4 hover:shadow-md"
+      style={{
+        border: "1px solid var(--amazon-border-light)",
+        background: "var(--amazon-bg-white)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+      }}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-slate-50/80 opacity-80" />
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, var(--amazon-border-light), transparent)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom right, var(--amazon-bg-white), var(--amazon-bg-white), color-mix(in srgb, var(--amazon-bg-main) 80%, white))",
+          opacity: 0.8,
+        }}
+      />
 
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 truncate">
+          <p
+            className="truncate text-[11px] font-semibold uppercase tracking-[0.16em]"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
             {label}
           </p>
 
-          <h2 className="mt-2 text-lg md:text-xl font-bold text-slate-900 leading-none truncate">
+          <h2
+            className="mt-2 truncate text-lg font-bold leading-none md:text-xl"
+            style={{ color: "var(--amazon-text-primary)" }}
+          >
             {value}
           </h2>
 
-          <div className="mt-3 h-1.5 w-14 rounded-full bg-slate-100 overflow-hidden">
+          <div
+            className="mt-3 h-1.5 w-14 overflow-hidden rounded-full"
+            style={{ background: "var(--amazon-bg-main)" }}
+          >
             <div
-              className={`h-full w-8 rounded-full bg-gradient-to-r ${selected.accent}`}
+              className="h-full w-8 rounded-full"
+              style={{ background: selected.accent }}
             />
           </div>
         </div>
 
         <div
-          className={`shrink-0 h-10 w-10 rounded-xl border flex items-center justify-center ${selected.soft}`}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border"
+          style={{
+            background: selected.softBg,
+            borderColor: selected.softBorder,
+            color: selected.softText,
+          }}
         >
           {icon}
         </div>
@@ -851,11 +1074,19 @@ function getStatusStyle(status) {
   const value = String(status || "").toLowerCase();
 
   if (value === "canceled" || value === "cancelled") {
-    return "bg-red-50 text-red-700 border border-red-100";
+    return {
+      background: "var(--amazon-danger-soft)",
+      color: "var(--amazon-danger)",
+      border: `1px solid var(--amazon-danger-border)`,
+    };
   }
 
   if (value === "shipped" || value === "delivered") {
-    return "bg-emerald-50 text-emerald-700 border border-emerald-100";
+    return {
+      background: "var(--amazon-success-soft)",
+      color: "var(--amazon-success-strong)",
+      border: `1px solid color-mix(in srgb, var(--amazon-success-strong) 18%, white)`,
+    };
   }
 
   if (
@@ -863,21 +1094,29 @@ function getStatusStyle(status) {
     value === "unshipped" ||
     value === "partiallyshipped"
   ) {
-    return "bg-amber-50 text-amber-700 border border-amber-100";
+    return {
+      background: "color-mix(in srgb, var(--amazon-btn-yellow) 45%, white)",
+      color: "var(--amazon-orange)",
+      border: `1px solid color-mix(in srgb, var(--amazon-orange) 18%, white)`,
+    };
   }
 
-  return "bg-blue-50 text-blue-700 border border-blue-100";
+  return {
+    background: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+    color: "var(--amazon-link-blue)",
+    border: `1px solid color-mix(in srgb, var(--amazon-link-blue) 18%, white)`,
+  };
 }
 
 function getStatusDotStyle(status) {
   const value = String(status || "").toLowerCase();
 
   if (value === "canceled" || value === "cancelled") {
-    return "bg-red-500";
+    return "var(--amazon-danger)";
   }
 
   if (value === "shipped" || value === "delivered") {
-    return "bg-emerald-500";
+    return "var(--amazon-success-strong)";
   }
 
   if (
@@ -885,10 +1124,10 @@ function getStatusDotStyle(status) {
     value === "unshipped" ||
     value === "partiallyshipped"
   ) {
-    return "bg-amber-500";
+    return "var(--amazon-orange)";
   }
 
-  return "bg-blue-500";
+  return "var(--amazon-link-blue)";
 }
 
 function formatInputDateDMY(dateString) {

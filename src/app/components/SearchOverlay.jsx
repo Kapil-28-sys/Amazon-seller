@@ -40,7 +40,7 @@ const dashboardSearch = [
     route: "/payments",
     keywords: ["payments", "money"],
   },
-   {
+  {
     id: "page-5",
     title: "Sales",
     description: "Track your revenue",
@@ -117,8 +117,6 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
   const recognitionRef = useRef(null);
   const inputRef = useRef(null);
 
-  /* RESET WHEN CLOSED */
-
   useEffect(() => {
     if (!open) {
       setSearchText("");
@@ -127,8 +125,6 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
       stopListening();
     }
   }, [open]);
-
-  /* AUTO FOCUS */
 
   useEffect(() => {
     if (open) {
@@ -139,8 +135,6 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
       return () => clearTimeout(timer);
     }
   }, [open]);
-
-  /* POSITION HANDLING */
 
   useEffect(() => {
     if (!open) return;
@@ -186,8 +180,6 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
     };
   }, [open, anchorRef]);
 
-  /* FILTERED RESULTS */
-
   const results = useMemo(() => {
     const text = searchText.trim().toLowerCase();
 
@@ -202,13 +194,9 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
     });
   }, [searchText]);
 
-  /* RESET INDEX WHEN SEARCH CHANGES */
-
   useEffect(() => {
     setSelectedIndex(0);
   }, [searchText]);
-
-  /* KEYBOARD NAVIGATION */
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -244,8 +232,6 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, results, selectedIndex, router, onClose]);
-
-  /* VOICE SEARCH */
 
   const startListening = () => {
     if (!("webkitSpeechRecognition" in window)) {
@@ -298,7 +284,7 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="absolute inset-0 bg-slate-950/45 backdrop-blur-md"
+            className="absolute inset-0 bg-[color:var(--sidebar-overlay)] backdrop-blur-md"
             onClick={onClose}
           />
 
@@ -311,7 +297,14 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
             style={style}
             className="absolute"
           >
-            <div className="relative overflow-hidden rounded-[28px] border border-white/30 bg-white/80 backdrop-blur-2xl shadow-[0_30px_90px_rgba(0,0,0,0.28)]">
+            <div
+              className="relative overflow-hidden rounded-[28px] border backdrop-blur-2xl"
+              style={{
+                borderColor: "rgba(255,255,255,0.25)",
+                background: "rgba(255,255,255,0.82)",
+                boxShadow: "0 30px 90px rgba(0,0,0,0.28)",
+              }}
+            >
               {/* animated glow layers */}
               <motion.div
                 animate={{
@@ -319,22 +312,25 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                   scale: [1, 1.08, 1],
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="pointer-events-none absolute -top-16 left-8 h-32 w-32 rounded-full bg-orange-300/30 blur-3xl"
+                className="pointer-events-none absolute -top-16 left-8 h-32 w-32 rounded-full blur-3xl"
+                style={{ background: "color-mix(in srgb, var(--amazon-btn-orange) 30%, transparent)" }}
               />
+
               <motion.div
                 animate={{
                   opacity: [0.25, 0.55, 0.25],
                   scale: [1.05, 1, 1.05],
                 }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="pointer-events-none absolute -right-10 top-8 h-28 w-28 rounded-full bg-sky-300/20 blur-3xl"
+                className="pointer-events-none absolute -right-10 top-8 h-28 w-28 rounded-full blur-3xl"
+                style={{ background: "color-mix(in srgb, var(--amazon-link-blue) 20%, transparent)" }}
               />
 
               {/* top premium line */}
-              <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#FF9900] to-transparent" />
+              <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--amazon-orange)] to-transparent" />
 
               {/* INPUT SECTION */}
-              <div className="relative border-b border-slate-200/80 px-4 py-3 sm:px-5 sm:py-4">
+              <div className="relative border-b px-4 py-3 sm:px-5 sm:py-4 border-[color:var(--amazon-border-light)]">
                 <motion.div
                   animate={
                     isFocused
@@ -348,14 +344,14 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                       : {}
                   }
                   transition={{ duration: 1.8, repeat: Infinity }}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/90 px-3 py-3 shadow-sm"
+                  className="flex items-center gap-3 rounded-2xl border px-3 py-3 shadow-sm bg-[color:var(--amazon-bg-white)]/90 border-[color:var(--amazon-border-light)]"
                 >
                   <motion.div
                     animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.05, 1] }}
                     transition={{ duration: 2.8, repeat: Infinity }}
                     className="shrink-0"
                   >
-                    <Search className="h-4 w-4 text-slate-500" />
+                    <Search className="h-4 w-4 text-[var(--amazon-text-secondary)]" />
                   </motion.div>
 
                   <input
@@ -366,11 +362,11 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     placeholder="Search pages, orders, products..."
-                    className="flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400 min-w-0"
+                    className="flex-1 min-w-0 bg-transparent text-sm outline-none text-[var(--amazon-text-primary)] placeholder:text-[var(--amazon-text-secondary)]"
                   />
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <div className="hidden sm:flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] text-slate-500">
+                    <div className="hidden sm:flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] border-[color:var(--amazon-border-light)] bg-[var(--amazon-bg-main)] text-[var(--amazon-text-secondary)]">
                       <Sparkles className="h-3 w-3" />
                       Smart Search
                     </div>
@@ -415,7 +411,7 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                         className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full transition ${
                           listening
                             ? "bg-red-500 text-white shadow-lg shadow-red-200"
-                            : "bg-[#FF9900] text-black shadow-lg shadow-orange-200 hover:bg-[#ffad29]"
+                            : "bg-[var(--amazon-orange)] text-[var(--amazon-text-primary)] shadow-lg hover:bg-[var(--amazon-btn-orange)]"
                         }`}
                       >
                         <Mic className="h-4 w-4" />
@@ -427,14 +423,14 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                       whileTap={{ scale: 0.92 }}
                       onClick={onClose}
                       type="button"
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700"
+                      className="flex h-10 w-10 items-center justify-center rounded-full transition bg-[var(--amazon-bg-main)] text-[var(--amazon-text-secondary)] hover:bg-[var(--amazon-border-light)] hover:text-[var(--amazon-text-primary)]"
                     >
                       <X className="h-4 w-4" />
                     </motion.button>
                   </div>
                 </motion.div>
 
-                <div className="mt-3 flex items-center justify-between px-1 text-[11px] text-slate-500">
+                <div className="mt-3 flex items-center justify-between px-1 text-[11px] text-[var(--amazon-text-secondary)]">
                   <span>Navigate faster with smart search</span>
                   <span className="hidden sm:inline">↑ ↓ to move • Enter to open</span>
                 </div>
@@ -467,11 +463,15 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                               onClick={() => handleRoute(item.route)}
                               className={`group relative mb-2 cursor-pointer overflow-hidden rounded-2xl border transition-all ${
                                 active
-                                  ? "border-orange-300 bg-gradient-to-r from-orange-50 to-white shadow-[0_10px_30px_rgba(255,153,0,0.18)]"
-                                  : "border-transparent bg-white/60 hover:border-slate-200 hover:bg-white"
+                                  ? "border-[var(--amazon-btn-orange)] bg-gradient-to-r from-[color:var(--amazon-btn-orange)]/10 to-[var(--amazon-bg-white)]"
+                                  : "border-transparent bg-[color:var(--amazon-bg-white)]/60 hover:border-[color:var(--amazon-border-light)] hover:bg-[var(--amazon-bg-white)]"
                               }`}
+                              style={{
+                                boxShadow: active
+                                  ? "0 10px 30px rgba(255,153,0,0.18)"
+                                  : "none",
+                              }}
                             >
-                              {/* hover shine */}
                               <div className="pointer-events-none absolute inset-0 overflow-hidden">
                                 <motion.div
                                   initial={{ x: "-120%" }}
@@ -486,7 +486,9 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                                   <div className="flex items-center gap-2">
                                     <p
                                       className={`truncate text-sm font-semibold ${
-                                        active ? "text-slate-900" : "text-slate-800"
+                                        active
+                                          ? "text-[var(--amazon-text-primary)]"
+                                          : "text-[var(--amazon-text-primary)]"
                                       }`}
                                     >
                                       {item.title}
@@ -496,27 +498,27 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                                       <motion.span
                                         initial={{ scale: 0.8, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
-                                        className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-medium text-orange-700"
+                                        className="rounded-full px-2 py-0.5 text-[10px] font-medium bg-[color:var(--amazon-btn-orange)]/15 text-[var(--amazon-dark-orange)]"
                                       >
                                         Selected
                                       </motion.span>
                                     )}
                                   </div>
 
-                                  <p className="mt-1 truncate text-xs text-slate-500">
+                                  <p className="mt-1 truncate text-xs text-[var(--amazon-text-secondary)]">
                                     {item.description}
                                   </p>
                                 </div>
 
                                 <div className="flex items-center gap-2 shrink-0">
-                                  <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] uppercase tracking-wide text-slate-500">
+                                  <span className="rounded-full px-2 py-1 text-[10px] uppercase tracking-wide bg-[var(--amazon-bg-main)] text-[var(--amazon-text-secondary)]">
                                     {item.type}
                                   </span>
 
                                   <motion.div
                                     animate={active ? { x: [0, 3, 0] } : {}}
                                     transition={{ duration: 1.2, repeat: Infinity }}
-                                    className="text-slate-400"
+                                    className="text-[var(--amazon-text-secondary)]"
                                   >
                                     <ArrowUpRight className="h-4 w-4" />
                                   </motion.div>
@@ -540,15 +542,15 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                             rotate: [0, 5, -5, 0],
                           }}
                           transition={{ duration: 2.4, repeat: Infinity }}
-                          className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100"
+                          className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--amazon-bg-main)]"
                         >
-                          <Search className="h-6 w-6 text-slate-400" />
+                          <Search className="h-6 w-6 text-[var(--amazon-text-secondary)]" />
                         </motion.div>
 
-                        <p className="text-sm font-semibold text-slate-700">
+                        <p className="text-sm font-semibold text-[var(--amazon-text-primary)]">
                           No results found
                         </p>
-                        <p className="mt-1 text-xs text-slate-500">
+                        <p className="mt-1 text-xs text-[var(--amazon-text-secondary)]">
                           Try searching dashboard, reports, inventory or orders
                         </p>
                       </motion.div>
@@ -561,41 +563,47 @@ export default function SearchOverlay({ open, onClose, anchorRef }) {
                       exit={{ opacity: 0, y: 8 }}
                       className="px-5 py-8"
                     >
-                      <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50/80 px-6 py-10 text-center">
+                      <div className="rounded-3xl border border-dashed px-6 py-10 text-center border-[color:var(--amazon-border-light)] bg-[color:var(--amazon-bg-main)]/80">
                         <motion.div
                           animate={{ y: [0, -4, 0] }}
                           transition={{ duration: 2, repeat: Infinity }}
-                          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm"
+                          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--amazon-bg-white)] shadow-sm"
                         >
-                          <Sparkles className="h-6 w-6 text-orange-500" />
+                          <Sparkles className="h-6 w-6 text-[var(--amazon-orange)]" />
                         </motion.div>
 
-                        <p className="text-sm font-semibold text-slate-700">
+                        <p className="text-sm font-semibold text-[var(--amazon-text-primary)]">
                           Search pages, orders, customers, products...
                         </p>
-                        <p className="mt-2 text-xs text-slate-500">
+                        <p className="mt-2 text-xs text-[var(--amazon-text-secondary)]">
                           Use keyboard navigation or voice search for faster access
                         </p>
                       </div>
 
                       <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                        {["Dashboard", "Orders", "Inventory", "Reports", "Sales", "Payments", "Customers"].map(
-                          (item, i) => (
-                            <motion.button
-                              key={item}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: i * 0.04 }}
-                              whileHover={{ y: -2, scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => setSearchText(item)}
-                              className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition hover:border-orange-200 hover:text-orange-600"
-                              type="button"
-                            >
-                              {item}
-                            </motion.button>
-                          )
-                        )}
+                        {[
+                          "Dashboard",
+                          "Orders",
+                          "Inventory",
+                          "Reports",
+                          "Sales",
+                          "Payments",
+                          "Customers",
+                        ].map((item, i) => (
+                          <motion.button
+                            key={item}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.04 }}
+                            whileHover={{ y: -2, scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => setSearchText(item)}
+                            className="rounded-2xl border px-3 py-2 text-xs font-medium shadow-sm transition border-[color:var(--amazon-border-light)] bg-[var(--amazon-bg-white)] text-[var(--amazon-text-secondary)] hover:border-[color:var(--amazon-btn-orange)] hover:text-[var(--amazon-link-hover)]"
+                            type="button"
+                          >
+                            {item}
+                          </motion.button>
+                        ))}
                       </div>
                     </motion.div>
                   )}

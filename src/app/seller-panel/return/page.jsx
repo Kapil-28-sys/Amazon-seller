@@ -1,6 +1,6 @@
 "use client";
 
-import { RefreshCcw, PackageX, CheckCircle, XCircle } from "lucide-react";
+import { RefreshCcw, PackageX, CheckCircle } from "lucide-react";
 import DynamicTable from "@/app/components/DynamicTable";
 
 export default function ReturnsPage() {
@@ -50,12 +50,20 @@ export default function ReturnsPage() {
   const approvedReturns = returns.filter(r => r.status === "Approved").length;
 
   return (
-    <div className="p-8 bg-[#f8fafc] min-h-screen space-y-8">
+    <div
+      className="p-8 min-h-screen space-y-8"
+      style={{ background: "var(--amazon-bg-main)" }}
+    >
 
-      {/* Page Header */}
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Return Products</h1>
-        <p className="text-slate-500 mt-1">
+        <h1
+          className="text-3xl font-bold"
+          style={{ color: "var(--amazon-text-primary)" }}
+        >
+          Return Products
+        </h1>
+        <p style={{ color: "var(--amazon-text-secondary)" }}>
           Manage customer return requests
         </p>
       </div>
@@ -63,51 +71,104 @@ export default function ReturnsPage() {
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6">
 
-        <div className="bg-white p-6 rounded-xl shadow border flex items-center gap-4">
-          <RefreshCcw className="text-indigo-600" size={28}/>
+        <div
+          className="p-6 rounded-xl shadow border flex items-center gap-4"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "var(--amazon-border-light)"
+          }}
+        >
+          <RefreshCcw style={{ color: "var(--amazon-info)" }} size={28} />
           <div>
-            <p className="text-sm text-slate-500">Total Returns</p>
-            <h2 className="text-xl font-bold">{totalReturns}</h2>
+            <p style={{ color: "var(--amazon-text-secondary)" }}>
+              Total Returns
+            </p>
+            <h2 style={{ color: "var(--amazon-text-primary)" }} className="text-xl font-bold">
+              {totalReturns}
+            </h2>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow border flex items-center gap-4">
-          <PackageX className="text-orange-500" size={28}/>
+        <div
+          className="p-6 rounded-xl shadow border flex items-center gap-4"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "var(--amazon-border-light)"
+          }}
+        >
+          <PackageX style={{ color: "var(--amazon-dark-orange)" }} size={28} />
           <div>
-            <p className="text-sm text-slate-500">Pending</p>
-            <h2 className="text-xl font-bold">{pendingReturns}</h2>
+            <p style={{ color: "var(--amazon-text-secondary)" }}>
+              Pending
+            </p>
+            <h2 style={{ color: "var(--amazon-text-primary)" }} className="text-xl font-bold">
+              {pendingReturns}
+            </h2>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow border flex items-center gap-4">
-          <CheckCircle className="text-green-600" size={28}/>
+        <div
+          className="p-6 rounded-xl shadow border flex items-center gap-4"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "var(--amazon-border-light)"
+          }}
+        >
+          <CheckCircle style={{ color: "var(--amazon-success-strong)" }} size={28} />
           <div>
-            <p className="text-sm text-slate-500">Approved</p>
-            <h2 className="text-xl font-bold">{approvedReturns}</h2>
+            <p style={{ color: "var(--amazon-text-secondary)" }}>
+              Approved
+            </p>
+            <h2 style={{ color: "var(--amazon-text-primary)" }} className="text-xl font-bold">
+              {approvedReturns}
+            </h2>
           </div>
         </div>
 
       </div>
 
-      {/* Returns Table */}
-      <div className="bg-white rounded-xl shadow border p-4">
+      {/* Table */}
+      <div
+        className="rounded-xl shadow border p-4"
+        style={{
+          background: "var(--amazon-bg-white)",
+          borderColor: "var(--amazon-border-light)"
+        }}
+      >
 
         <DynamicTable
           headers={headers}
-          data={returns.map((r)=>({
-            "Return ID": <span className="font-semibold text-indigo-600">{r.id}</span>,
+          data={returns.map((r) => ({
+            "Return ID": (
+              <span
+                className="font-semibold"
+                style={{ color: "var(--amazon-link-blue)" }}
+              >
+                {r.id}
+              </span>
+            ),
             "Order ID": r.order,
             Customer: r.customer,
             Product: r.product,
             Reason: r.reason,
             Status: (
-              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                r.status === "Approved"
-                ? "bg-green-100 text-green-700"
-                : r.status === "Rejected"
-                ? "bg-red-100 text-red-700"
-                : "bg-orange-100 text-orange-600"
-              }`}>
+              <span
+                className="px-3 py-1 rounded-full text-xs font-semibold"
+                style={{
+                  background:
+                    r.status === "Approved"
+                      ? "var(--amazon-success-soft)"
+                      : r.status === "Rejected"
+                      ? "var(--amazon-danger-soft)"
+                      : "#fff7ed",
+                  color:
+                    r.status === "Approved"
+                      ? "var(--amazon-success-strong)"
+                      : r.status === "Rejected"
+                      ? "var(--amazon-danger)"
+                      : "var(--amazon-dark-orange)"
+                }}
+              >
                 {r.status}
               </span>
             ),

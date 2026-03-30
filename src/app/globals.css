@@ -3,71 +3,338 @@
 /* =========================================
    LIGHT / DARK THEME VARIABLES
 ========================================= */
-:root{
-
+:root {
   /* ===== Primary Amazon Brand Colors ===== */
-  --amazon-orange: #FF9900;      /* main orange */
-  --amazon-dark-orange: #e47911; /* button hover orange */
-  --amazon-blue: #232F3E;        /* navbar dark blue */
-  --amazon-light-blue: #37475A;  /* secondary navbar */
+  --amazon-orange: #ff9900;
+  --amazon-dark-orange: #e47911;
+  --amazon-blue: #354961;
+  --amazon-light-blue: #37475a;
 
   /* ===== Background Colors ===== */
-  --amazon-bg-main: #EAEDED;     /* page background */
-  --amazon-bg-white: #FFFFFF;    /* cards / sections */
-  --amazon-footer: #131A22;      /* bottom footer */
+  --amazon-bg-main: #eaeded;
+  --amazon-bg-white: #ffffff;
+  --amazon-footer: #131a22;
 
   /* ===== Text Colors ===== */
-  --amazon-text-primary: #0F1111; /* main text */
+  --amazon-text-primary: #0f1111;
   --amazon-text-secondary: #565959;
-  --amazon-text-white: #FFFFFF;
+  --amazon-text-white: #ffffff;
 
   /* ===== Border & Divider ===== */
-  --amazon-border-light: #DDD;
-  --amazon-border-medium: #CCC;
+  --amazon-border-light: #ddd;
+  --amazon-border-medium: #ccc;
   --amazon-border-dark: #999;
 
   /* ===== Buttons ===== */
-  --amazon-btn-yellow: #FFD814;  /* add to cart */
-  --amazon-btn-yellow-hover: #F7CA00;
-  --amazon-btn-orange: #FFA41C;  /* buy now */
-  --amazon-btn-orange-hover: #FA8900;
+  --amazon-btn-yellow: #ffd814;
+  --amazon-btn-yellow-hover: #f7ca00;
+  --amazon-btn-orange: #ffa41c;
+  --amazon-btn-orange-hover: #fa8900;
 
   /* ===== Links ===== */
   --amazon-link-blue: #007185;
-  --amazon-link-hover: #C7511F;
+  --amazon-link-hover: #c7511f;
 
+  /* ===== Status ===== */
+  --amazon-danger: #dc2626;
+  --amazon-danger-soft: #fef2f2;
+  --amazon-danger-border: #fecaca;
+
+  --amazon-success: #34d399;
+  --amazon-success-soft: #ecfdf5;
+  --amazon-success-strong: #10b981;
+
+  --amazon-info: #0ea5e9;
+  --amazon-warning-soft: #fff7ed;
+
+  /* ===== Overlay / Helpers ===== */
+  --amazon-overlay-dark: rgba(0, 0, 0, 0.5);
+  --sidebar-overlay: rgba(0, 0, 0, 0.4);
+  --sidebar-hover: rgba(255, 255, 255, 0.1);
+  --sidebar-soft: rgba(255, 255, 255, 0.08);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-shadow: rgba(0, 0, 0, 0.2);
 }
 
+/* =========================================
+   OPTIONAL DARK THEME
+========================================= */
+[data-theme="dark"] {
+  --amazon-bg-main: #0f1111;
+  --amazon-bg-white: #1a1a1a;
+  --amazon-text-primary: #ffffff;
+  --amazon-text-secondary: #c7c7c7;
+  --amazon-border-light: #2a2a2a;
+  --amazon-border-medium: #3a3a3a;
+  --amazon-border-dark: #4a4a4a;
+  --amazon-warning-soft: #3b2a14;
+}
 
 /* =========================================
-   TAILWIND BASE
+   TAILWIND
 ========================================= */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   GLOBAL BASE
+========================================= */
+html,
+body {
+  background: var(--amazon-bg-main);
+  color: var(--amazon-text-primary);
+}
+
+/* =========================================
+   AMAZON THEME UTILITY CLASSES
+========================================= */
+.bg-amazon-main {
+  background: var(--amazon-bg-main);
+}
+
+.bg-amazon-card {
+  background: var(--amazon-bg-white);
+}
+
+.bg-amazon-footer {
+  background: var(--amazon-footer);
+}
+
+.text-amazon-primary {
+  color: var(--amazon-text-primary);
+}
+
+.text-amazon-secondary {
+  color: var(--amazon-text-secondary);
+}
+
+.text-amazon-white {
+  color: var(--amazon-text-white);
+}
+
+.text-amazon-orange {
+  color: var(--amazon-orange);
+}
+
+.text-amazon-dark-orange {
+  color: var(--amazon-dark-orange);
+}
+
+.text-amazon-link {
+  color: var(--amazon-link-blue);
+}
+
+.border-amazon {
+  border-color: var(--amazon-border-light);
+}
+
+.border-amazon-medium {
+  border-color: var(--amazon-border-medium);
+}
+
+.border-amazon-dark {
+  border-color: var(--amazon-border-dark);
+}
+
+/* =========================================
+   AMAZON CARD SYSTEM
+========================================= */
+.amazon-card {
+  background: var(--amazon-bg-white);
+  border: 1px solid var(--amazon-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(15, 17, 17, 0.08);
+}
+
+.amazon-card-soft {
+  background: var(--amazon-bg-main);
+  border: 1px solid var(--amazon-border-light);
+  border-radius: 0.875rem;
+}
+
+.amazon-section-card {
+  background: var(--amazon-bg-white);
+  border: 1px solid var(--amazon-border-light);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(15, 17, 17, 0.08);
+}
+
+.amazon-section-header {
+  border-bottom: 1px solid var(--amazon-border-light);
+}
+
+/* =========================================
+   AMAZON BUTTONS
+========================================= */
+.amazon-btn-yellow {
+  background: var(--amazon-btn-yellow);
+  color: var(--amazon-text-primary);
+  border: 1px solid #fcd200;
+  transition: all 0.2s ease;
+}
+
+.amazon-btn-yellow:hover {
+  background: var(--amazon-btn-yellow-hover);
+}
+
+.amazon-btn-orange {
+  background: var(--amazon-btn-orange);
+  color: var(--amazon-text-primary);
+  border: 1px solid #f08804;
+  transition: all 0.2s ease;
+}
+
+.amazon-btn-orange:hover {
+  background: var(--amazon-btn-orange-hover);
+}
+
+.amazon-btn-glass {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--amazon-text-white);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.amazon-btn-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================
+   ICON BOXES
+========================================= */
+.amazon-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: rgba(255, 153, 0, 0.12);
+  color: var(--amazon-orange);
+}
+
+.amazon-icon-box-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--amazon-info);
+}
+
+.amazon-icon-box-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: var(--amazon-success-soft);
+  color: var(--amazon-success-strong);
+}
+
+.amazon-icon-box-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: var(--amazon-danger-soft);
+  color: var(--amazon-danger);
+}
+
+/* =========================================
+   STATUS BADGES
+========================================= */
+.amazon-badge-success {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--amazon-success-soft);
+  color: var(--amazon-success-strong);
+  border: 1px solid var(--amazon-border-light);
+}
+
+.amazon-badge-warning {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--amazon-warning-soft);
+  color: var(--amazon-dark-orange);
+  border: 1px solid var(--amazon-border-light);
+}
+
+.amazon-badge-danger {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--amazon-danger-soft);
+  color: var(--amazon-danger);
+  border: 1px solid var(--amazon-border-light);
+}
+
+.amazon-badge-info {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--amazon-info);
+  border: 1px solid var(--amazon-border-light);
+}
+
+/* =========================================
+   INFO BOXES / FILTER BOXES
+========================================= */
+.amazon-info-box {
+  background: var(--amazon-bg-main);
+  border: 1px solid var(--amazon-border-light);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+
+.amazon-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--amazon-bg-main);
+  color: var(--amazon-text-secondary);
+  border: 1px solid var(--amazon-border-light);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+}
 
 /* =========================================
    SIDEBAR / CONTENT LAYOUT FIX
-   (for collapsing sidebar)
 ========================================= */
-
-/* Sidebar collapsed */
-#sidebar[data-collapsed="true"] ~ #content{
+#sidebar[data-collapsed="true"] ~ #content {
   margin-left: 64px;
   transition: margin-left 0.3s ease;
 }
 
-/* Sidebar expanded */
-#sidebar[data-collapsed="false"] ~ #content{
+#sidebar[data-collapsed="false"] ~ #content {
   margin-left: 256px;
   transition: margin-left 0.3s ease;
 }
 
-/* Mobile view */
-@media (max-width:768px){
-  #content{
-    margin-left:0 !important;
+@media (max-width: 768px) {
+  #content {
+    margin-left: 0 !important;
   }
 }

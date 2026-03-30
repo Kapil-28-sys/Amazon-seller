@@ -307,16 +307,33 @@ function formatCompactCurrency(value) {
 
 function getStatusBadge(status) {
   const map = {
-    Completed: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    Pending: "bg-amber-50 text-amber-700 border-amber-200",
-    Cancelled: "bg-rose-50 text-rose-700 border-rose-200",
+    Completed: {
+      bg: "var(--amazon-success-soft)",
+      text: "var(--amazon-success-strong)",
+    },
+    Pending: {
+      bg: "#fff7ed",
+      text: "var(--amazon-dark-orange)",
+    },
+    Cancelled: {
+      bg: "var(--amazon-danger-soft)",
+      text: "var(--amazon-danger)",
+    },
+  };
+
+  const style = map[status] || {
+    bg: "var(--amazon-bg-main)",
+    text: "var(--amazon-text-secondary)",
   };
 
   return (
     <span
-      className={`inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
-        map[status] || "bg-slate-50 text-slate-700 border-slate-200"
-      }`}
+      className="inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold border"
+      style={{
+        background: style.bg,
+        color: style.text,
+        borderColor: "var(--amazon-border-light)",
+      }}
     >
       {status}
     </span>
@@ -576,16 +593,42 @@ function getBorder() {
 
 function SummaryCard({ title, value, icon: Icon, subtitle }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div
+      className="rounded-2xl border p-4 shadow-sm"
+      style={{
+        background: "var(--amazon-bg-white)",
+        borderColor: "var(--amazon-border-light)",
+      }}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+          <p
+            className="text-xs font-medium uppercase tracking-wide"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
             {title}
           </p>
-          <h3 className="mt-2 text-2xl font-bold text-slate-900">{value}</h3>
-          <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
+          <h3
+            className="mt-2 text-2xl font-bold"
+            style={{ color: "var(--amazon-text-primary)" }}
+          >
+            {value}
+          </h3>
+          <p
+            className="mt-1 text-xs"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
+            {subtitle}
+          </p>
         </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-[#FF9900]">
+
+        <div
+          className="flex h-11 w-11 items-center justify-center rounded-xl"
+          style={{
+            background: "rgba(255, 153, 0, 0.12)",
+            color: "var(--amazon-orange)",
+          }}
+        >
           <Icon size={20} />
         </div>
       </div>
@@ -595,14 +638,36 @@ function SummaryCard({ title, value, icon: Icon, subtitle }) {
 
 function SectionCard({ title, subtitle, children, rightAction }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex flex-col gap-3 border-b border-slate-200 p-4 md:flex-row md:items-center md:justify-between">
+    <div
+      className="rounded-2xl border shadow-sm"
+      style={{
+        background: "var(--amazon-bg-white)",
+        borderColor: "var(--amazon-border-light)",
+      }}
+    >
+      <div
+        className="flex flex-col gap-3 border-b p-4 md:flex-row md:items-center md:justify-between"
+        style={{ borderColor: "var(--amazon-border-light)" }}
+      >
         <div>
-          <h2 className="text-lg font-bold text-slate-900">{title}</h2>
-          {subtitle ? <p className="text-sm text-slate-500">{subtitle}</p> : null}
+          <h2
+            className="text-lg font-bold"
+            style={{ color: "var(--amazon-text-primary)" }}
+          >
+            {title}
+          </h2>
+          {subtitle ? (
+            <p
+              className="text-sm"
+              style={{ color: "var(--amazon-text-secondary)" }}
+            >
+              {subtitle}
+            </p>
+          ) : null}
         </div>
         {rightAction}
       </div>
+
       <div className="p-4">{children}</div>
     </div>
   );
@@ -685,7 +750,10 @@ export default function SalesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div
+      className="min-h-screen"
+      style={{ background: "var(--amazon-bg-main)" }}
+    >
       <div className="space-y-6 p-4 md:p-6">
         <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-[#232F3E] via-[#1f2937] to-[#111827] text-white shadow-xl">
           <div className="flex flex-col gap-5 p-6 lg:flex-row lg:items-center lg:justify-between">
@@ -754,32 +822,100 @@ export default function SalesPage() {
           title="Sales Register Preview"
           subtitle="Important columns in table, full details in eye icon modal"
           rightAction={
-            <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">
+            <div
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm"
+              style={{
+                background: "var(--amazon-bg-main)",
+                color: "var(--amazon-text-secondary)",
+                border: "1px solid var(--amazon-border-light)",
+              }}
+            >
               <CalendarRange size={16} />
               01-Sep-2025 to 30-Sep-2025
             </div>
           }
         >
           <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-4">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs font-medium text-slate-500">Register Type</p>
-              <p className="mt-1 text-sm font-bold text-slate-900">
+            <div
+              className="rounded-xl border p-3"
+              style={{
+                background: "var(--amazon-bg-main)",
+                borderColor: "var(--amazon-border-light)",
+              }}
+            >
+              <p
+                className="text-xs font-medium"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Register Type
+              </p>
+              <p
+                className="mt-1 text-sm font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 Sales Register
               </p>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs font-medium text-slate-500">Seller GSTIN</p>
-              <p className="mt-1 text-sm font-bold text-slate-900">
+
+            <div
+              className="rounded-xl border p-3"
+              style={{
+                background: "var(--amazon-bg-main)",
+                borderColor: "var(--amazon-border-light)",
+              }}
+            >
+              <p
+                className="text-xs font-medium"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Seller GSTIN
+              </p>
+              <p
+                className="mt-1 text-sm font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 08AKGP5461M1B2C
               </p>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs font-medium text-slate-500">Primary Channel</p>
-              <p className="mt-1 text-sm font-bold text-slate-900">Amazon</p>
+
+            <div
+              className="rounded-xl border p-3"
+              style={{
+                background: "var(--amazon-bg-main)",
+                borderColor: "var(--amazon-border-light)",
+              }}
+            >
+              <p
+                className="text-xs font-medium"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Primary Channel
+              </p>
+              <p
+                className="mt-1 text-sm font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
+                Amazon
+              </p>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs font-medium text-slate-500">Export Format</p>
-              <p className="mt-1 flex items-center gap-2 text-sm font-bold text-slate-900">
+
+            <div
+              className="rounded-xl border p-3"
+              style={{
+                background: "var(--amazon-bg-main)",
+                borderColor: "var(--amazon-border-light)",
+              }}
+            >
+              <p
+                className="text-xs font-medium"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Export Format
+              </p>
+              <p
+                className="mt-1 flex items-center gap-2 text-sm font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
                 <FileSpreadsheet size={15} />
                 Excel Register
               </p>

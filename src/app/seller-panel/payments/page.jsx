@@ -1,6 +1,11 @@
 "use client";
 
-import { DollarSign, Clock, CheckCircle, Search, Filter, Download } from "lucide-react";
+import {
+  DollarSign,
+  Clock,
+  CheckCircle,
+  Download,
+} from "lucide-react";
 import DynamicTable from "@/app/components/DynamicTable";
 
 export default function PaymentsPage() {
@@ -53,109 +58,277 @@ export default function PaymentsPage() {
   const completedPayments = "$960";
 
   return (
-    <div className="p-8 bg-[#f9fafb] min-h-screen space-y-8">
-      
+    <div
+      className="min-h-screen space-y-8 p-8"
+      style={{
+        background: "var(--amazon-bg-main)",
+        color: "var(--amazon-text-primary)",
+      }}
+    >
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Payments</h1>
-          <p className="text-gray-500 mt-1">Monitor your transactions and payout history.</p>
+          <h1
+            className="text-3xl font-extrabold tracking-tight"
+            style={{ color: "var(--amazon-text-primary)" }}
+          >
+            Payments
+          </h1>
+          <p
+            className="mt-1"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
+            Monitor your transactions and payout history.
+          </p>
         </div>
+
         <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
-                <Download size={16} /> Export
-            </button>
-            <button className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700 transition-all shadow-md shadow-blue-100">
-                View Reports
-            </button>
+          <button
+            className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-all"
+            style={{
+              background: "var(--amazon-bg-white)",
+              borderColor: "var(--amazon-border-light)",
+              color: "var(--amazon-text-primary)",
+            }}
+          >
+            <Download size={16} />
+            Export
+          </button>
+
+          <button
+            className="rounded-lg px-4 py-2 text-sm font-medium shadow-md transition-all"
+            style={{
+              background: "var(--amazon-link-blue)",
+              color: "var(--amazon-text-white)",
+              boxShadow: "0 4px 12px color-mix(in srgb, var(--amazon-link-blue) 20%, transparent)",
+            }}
+          >
+            View Reports
+          </button>
         </div>
       </div>
 
       {/* Payment Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Total Revenue */}
-        <div className="group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-          <div className="flex justify-between items-start">
+        <div
+          className="group rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "color-mix(in srgb, var(--amazon-border-light) 55%, white)",
+          }}
+        >
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Revenue</p>
-              <h2 className="text-3xl font-bold text-gray-900 mt-2">{totalRevenue}</h2>
+              <p
+                className="text-sm font-medium uppercase tracking-wider"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Total Revenue
+              </p>
+              <h2
+                className="mt-2 text-3xl font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
+                {totalRevenue}
+              </h2>
             </div>
-            <div className="p-3 bg-green-50 text-green-600 rounded-xl group-hover:scale-110 transition-transform">
+
+            <div
+              className="rounded-xl p-3 transition-transform group-hover:scale-110"
+              style={{
+                background: "var(--amazon-success-soft)",
+                color: "var(--amazon-success-strong)",
+              }}
+            >
               <DollarSign size={24} />
             </div>
           </div>
-          <div className="mt-4 flex items-center text-xs text-green-600 font-medium">
+
+          <div
+            className="mt-4 flex items-center text-xs font-medium"
+            style={{ color: "var(--amazon-success-strong)" }}
+          >
             <span>+12.5% from last month</span>
           </div>
         </div>
 
         {/* Pending Payments */}
-        <div className="group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-          <div className="flex justify-between items-start">
+        <div
+          className="group rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "color-mix(in srgb, var(--amazon-border-light) 55%, white)",
+          }}
+        >
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Pending</p>
-              <h2 className="text-3xl font-bold text-gray-900 mt-2">{pendingPayments}</h2>
+              <p
+                className="text-sm font-medium uppercase tracking-wider"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Pending
+              </p>
+              <h2
+                className="mt-2 text-3xl font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
+                {pendingPayments}
+              </h2>
             </div>
-            <div className="p-3 bg-orange-50 text-orange-500 rounded-xl group-hover:scale-110 transition-transform">
+
+            <div
+              className="rounded-xl p-3 transition-transform group-hover:scale-110"
+              style={{
+                background: "color-mix(in srgb, var(--amazon-btn-yellow) 40%, white)",
+                color: "var(--amazon-orange)",
+              }}
+            >
               <Clock size={24} />
             </div>
           </div>
-          <div className="mt-4 flex items-center text-xs text-gray-400 font-medium">
+
+          <div
+            className="mt-4 flex items-center text-xs font-medium"
+            style={{ color: "var(--amazon-text-secondary)" }}
+          >
             <span>Awaiting bank verification</span>
           </div>
         </div>
 
         {/* Completed Payments */}
-        <div className="group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-          <div className="flex justify-between items-start">
+        <div
+          className="group rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md"
+          style={{
+            background: "var(--amazon-bg-white)",
+            borderColor: "color-mix(in srgb, var(--amazon-border-light) 55%, white)",
+          }}
+        >
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Completed</p>
-              <h2 className="text-3xl font-bold text-gray-900 mt-2">{completedPayments}</h2>
+              <p
+                className="text-sm font-medium uppercase tracking-wider"
+                style={{ color: "var(--amazon-text-secondary)" }}
+              >
+                Completed
+              </p>
+              <h2
+                className="mt-2 text-3xl font-bold"
+                style={{ color: "var(--amazon-text-primary)" }}
+              >
+                {completedPayments}
+              </h2>
             </div>
-            <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-110 transition-transform">
+
+            <div
+              className="rounded-xl p-3 transition-transform group-hover:scale-110"
+              style={{
+                background: "color-mix(in srgb, var(--amazon-link-blue) 10%, white)",
+                color: "var(--amazon-link-blue)",
+              }}
+            >
               <CheckCircle size={24} />
             </div>
           </div>
-          <div className="mt-4 flex items-center text-xs text-blue-600 font-medium">
+
+          <div
+            className="mt-4 flex items-center text-xs font-medium"
+            style={{ color: "var(--amazon-link-blue)" }}
+          >
             <span>Successfully settled</span>
           </div>
         </div>
       </div>
 
       {/* Table Section Wrap */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h3 className="text-lg font-bold text-gray-800">Recent Transactions</h3>
-            
+      <div
+        className="overflow-hidden rounded-2xl border shadow-sm"
+        style={{
+          background: "var(--amazon-bg-white)",
+          borderColor: "color-mix(in srgb, var(--amazon-border-light) 55%, white)",
+        }}
+      >
+        <div
+          className="flex flex-col justify-between gap-4 border-b p-6 sm:flex-row sm:items-center"
+          style={{
+            borderColor: "color-mix(in srgb, var(--amazon-border-light) 35%, white)",
+          }}
+        >
+          <h3
+            className="text-lg font-bold"
+            style={{ color: "var(--amazon-text-primary)" }}
+          >
+            Recent Transactions
+          </h3>
         </div>
-        
+
         <div className="p-2">
-            <DynamicTable
+          <DynamicTable
             headers={headers}
             data={data.map((item) => ({
-                "Order ID": <span className="font-semibold text-blue-600">{item.orderId}</span>,
-                Customer: <span className="text-gray-700">{item.customer}</span>,
-                Orders: item.orders,
-                Amount: <span className="font-bold text-gray-900">{item.amount}</span>,
-                "Payment Status": (
+              "Order ID": (
                 <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
-                    item.status === "Paid"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
+                  style={{
+                    fontWeight: 600,
+                    color: "var(--amazon-link-blue)",
+                  }}
                 >
-                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${item.status === "Paid" ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                    {item.status}
+                  {item.orderId}
                 </span>
-                ),
-                Date: <span className="text-gray-500">{item.date}</span>,
+              ),
+              Customer: (
+                <span style={{ color: "var(--amazon-text-primary)" }}>
+                  {item.customer}
+                </span>
+              ),
+              Orders: item.orders,
+              Amount: (
+                <span
+                  style={{
+                    fontWeight: 700,
+                    color: "var(--amazon-text-primary)",
+                  }}
+                >
+                  {item.amount}
+                </span>
+              ),
+              "Payment Status": (
+                <span
+                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider"
+                  style={
+                    item.status === "Paid"
+                      ? {
+                          background: "var(--amazon-success-soft)",
+                          color: "var(--amazon-success-strong)",
+                        }
+                      : {
+                          background: "var(--amazon-danger-soft)",
+                          color: "var(--amazon-danger)",
+                        }
+                  }
+                >
+                  <span
+                    className="mr-1.5 h-1.5 w-1.5 rounded-full"
+                    style={{
+                      background:
+                        item.status === "Paid"
+                          ? "var(--amazon-success-strong)"
+                          : "var(--amazon-danger)",
+                    }}
+                  />
+                  {item.status}
+                </span>
+              ),
+              Date: (
+                <span style={{ color: "var(--amazon-text-secondary)" }}>
+                  {item.date}
+                </span>
+              ),
             }))}
-            title="" 
-            />
+            title=""
+          />
         </div>
       </div>
-
     </div>
   );
 }
